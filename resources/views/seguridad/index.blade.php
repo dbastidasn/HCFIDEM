@@ -8,7 +8,7 @@
   <title>Lectura-AcuasurR | Log in</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
-
+  <link rel="stylesheet" href="{{asset("assets/$theme/plugins/animate.css/animate.min.css")}}">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="{{asset("assets/$theme/plugins/fontawesome-free/css/all.min.css")}}">
   <!-- Ionicons -->
@@ -21,6 +21,8 @@
   
 </head>
 <body class="hold-transition login-page">
+
+<div class="simple-page-form animated flipInY" id="login-form">
 <div class="login-box">
   <div class="login-logo">
     <div class="row">
@@ -31,6 +33,7 @@
   </div>
   <!-- /.login-logo -->
   <div class="card">
+    
     <div class="card-body login-card-body">
         <img src="{{asset("assets/img/logo_acuasur.jpeg")}}") alt="User Avatar" class="col-xs-12 col-sm-12 col-md-12 m-t-10 text-center img-size-500 mr-12 " >
        <p class="login-box-msg"> <b>Ventas</b></p>
@@ -85,6 +88,7 @@
     </div>
     <!-- /.login-card-body -->
   </div>
+</div>
 </div>
 <!-- /.login-box -->
 

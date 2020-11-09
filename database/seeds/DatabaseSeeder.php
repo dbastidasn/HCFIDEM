@@ -15,7 +15,8 @@ class DatabaseSeeder extends Seeder
         $this->truncateTablas([
 
             'rol',
-            'permiso',
+            'empresa',
+            'empleado',
             'usuario',
             'usuario_rol'
 
@@ -27,7 +28,6 @@ class DatabaseSeeder extends Seeder
         // $this->call(UsersTableSeeder::class);
     
             $this->call(RolTablaSeeder::class);
-            $this->call(PermisoTablaSeeder::class);
             $this->call(UsuarioAdministradorSeeder::class);
     }
 

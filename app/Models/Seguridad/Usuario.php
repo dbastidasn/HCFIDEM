@@ -2,6 +2,8 @@
 
 namespace App\Models\Seguridad;
 
+use App\Models\Admin\Empleado;
+use App\Models\Admin\Empresa;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Models\Admin\Rol;
 use Illuminate\Support\Facades\Hash;
@@ -14,7 +16,7 @@ class Usuario extends Authenticatable
     //protected $guarded = ['id'];
     protected $fillable = [
         
-        'usuario', 'nombre', 'tipodeusuario', 'email', 'empresa',  'password', 'remember_token', 'estado'
+        'usuario', 'password', 'remember_token', 'tipo_de_usuario', 'email', 'activo', 'empleado_id'
     ];
 
 
@@ -25,7 +27,6 @@ class Usuario extends Authenticatable
     ];
 
     
-
     public function roles1(){
         return $this->belongsToMany(Rol::class, 'usuario_rol');
     }
@@ -41,8 +42,10 @@ class Usuario extends Authenticatable
                     'rol_nombre' => $roles1[0]['nombre'],
                     'usuario' => $this->usuario,
                     'usuario_id' => $this->id,
-                    'nombre_usuario' => $this->nombre,
-                    'estado'=>$this->estado
+                    'tipo_user' => $this->tipo_de_usuario,
+                    'empleado_id' => $this->empleado_id,
+                    'email' => $this->email,
+                    'activo'=>$this->activo
                 ]
                 );
         }
@@ -56,5 +59,12 @@ class Usuario extends Authenticatable
             $this->attributes['remenber_token'] = Hash::make($value);
         }
     }
+
+    public function empleados(){
+        return $this->belongsTo(Empleado::class, 'id');
+    }
+
+   
+    
 
 }

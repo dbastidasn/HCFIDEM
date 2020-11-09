@@ -30,12 +30,14 @@ class LoginController extends Controller
     
     protected function authenticated(Request $request, $user)
     {   
+
         $useractivo = $user->where([
             ['usuario', '=', $request->usuario],
-            ['estado', '=', 'activo']
+            ['activo', '=', 1]
         
         ])->count();
       
+
         $roles1 = $user->roles1()->get();
        
         if ($roles1->isNotEmpty() && $useractivo >= 1) {

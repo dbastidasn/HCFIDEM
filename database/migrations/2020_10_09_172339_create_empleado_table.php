@@ -23,9 +23,11 @@ class CreateEmpleadoTable extends Migration
             $table->string('ciudad',50)->nullable();
             $table->string('barrio',50)->nullable();
             $table->string('direccion',50)->nullable();
-            $table->integer('celular')->nullable();
+            $table->string('celular',50)->nullable();
             $table->string('telefono',50);
             $table->char('activo',1);
+            $table->unsignedBigInteger('empresa_id');
+            $table->foreign('empresa_id', 'fk_empresaid_empleadoid')->references('id')->on('empresa')->onDelete('restrict')->onUpdate('restrict');
             $table->timestamps();
         });
     }

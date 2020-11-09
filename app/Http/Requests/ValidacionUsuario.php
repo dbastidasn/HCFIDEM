@@ -27,11 +27,9 @@ class ValidacionUsuario extends FormRequest
             
         return [
             
-            'nombre'  => 'required|max:100',
-            'tipodeusuario'  => 'required',
+            'tipo_de_usuario'  => 'required',
             'email'  => 'required|email|max:100|unique:usuario,email,'.$this->route('id'),
-            'empresa'  => 'required|max:50',
-            'estado'  => 'required',
+            'activo'  => 'required',
             'rol_id' => 'required|integer'
         ];
             
@@ -41,13 +39,12 @@ class ValidacionUsuario extends FormRequest
         
         return [
             'usuario'  => 'required|max:50|unique:usuario,usuario,'.$this->route('id'),
-            'nombre'  => 'required|max:100',
-            'tipodeusuario'  => 'required',
+            'tipo_de_usuario'  => 'required',
             'email'  => 'required|email|max:100|unique:usuario,email,'.$this->route('id'),
-            'empresa'  => 'required|max:50',
             'password'  => 'required|min:6',
             'remenber_token'  => 'required|same:password',
-            'estado'  => 'required',
+            'activo'  => 'required',
+            'empleado_id' => 'required|integer|unique:usuario,empleado_id',
             'rol_id' => 'required|integer'
         ];
     

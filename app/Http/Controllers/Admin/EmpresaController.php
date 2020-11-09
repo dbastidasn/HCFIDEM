@@ -4,6 +4,11 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ValidacionArchivo;
+use App\Http\Requests\ValidacionEmpresa;
+use App\Models\Admin\Empresa;
+use App\Models\Seguridad\Usuario;
+use Illuminate\Support\Facades\Validator;
 
 class EmpresaController extends Controller
 {
@@ -12,8 +17,26 @@ class EmpresaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+           
+        if($request->ajax()){
+
+            $datas = Empresa::orderBy('id')->get();
+            
+            return  DataTables()->of($datas)
+            ->addColumn('editar', '<a href="{{url("admin/empresa/$id/editar")}}" class="btn-accion-tabla tooltipsC" title="Editar esta empresa">
+                  <i class="fa fa-fw fa-pencil-alt"></i>
+                </a>')
+        //     ->addColumn('editar', function($datas){
+        //   $button = '<button type="button" name="edit" id="'.$datas->id.'"
+        //   class ="edit btn btn-primary btn-sm">Editar</button>';
+        //   return $button;
+
+        //     }) 
+            ->rawColumns(['editar'])
+            ->make(true);
+            }
         return view('admin.empresa.index');
     }
 
@@ -24,7 +47,9 @@ class EmpresaController extends Controller
      */
     public function create()
     {
-        //
+        // $button = '<button type="button" name="edit" id="'.$datas->id.'"
+        // class"edit btn btn-primary btn-sm tooltipsC" title="Editar Empresa">Editar</button>';
+        // return $button;
     }
 
     /**
@@ -33,10 +58,41 @@ class EmpresaController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function guardar(Request $request)
     {
-        //
+        $rules = array(
+            'nombre'  => 'required|unique:empresa|max:100',
+            'documento' => 'numeric|unique:empresa|required|min:10000|max:9999999999',
+            'tipo_documento' => 'required',
+            'activo' => 'required'
+        );
+
+        $error = Validator::make($request->all(), $rules);
+
+        if($error->fails()) {
+            return response()->json(['errors' => $error->errors()->all()]);
+        }
+        
+        Empresa::create($request->all());
+            return response()->json(['success' => 'ok']);
+        
     }
+            
+      
+    
+    // public function guardar(ValidacionArchivo $request)
+    // {
+        
+    //     if($request->ajax()){
+    //         Empresa::create($request->all());
+    //         return response()->json(['respuesta' => 'ok']);
+    //     }else{
+    //         return response()->json(['respuesta' => 'ng']);
+    //     }
+            
+    //     return view('admin.empresa.index');
+    // }
+
 
     /**
      * Display the specified resource.
@@ -44,18 +100,32 @@ class EmpresaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
-        //
+    public function editar($id)
+    { 
+            $data = Empresa::findOrFail($id);
+        
+      
+        return view('admin.empresa.editar', compact('data'));
+
     }
 
+    // public function editar($id)
+    // {
+    //     if(request()->ajax()){
+    //     $data = Empresa::findOrFail($id);
+    //         return response()->json(['result'=>$data]);
+
+    //     }
+    //     return view('admin.empresa.editar');
+
+    // }
     /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function eliminar($id)
     {
         //
     }
@@ -67,11 +137,33 @@ class EmpresaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
-        //
+    public function actualizar(ValidacionEmpresa $request, $id)
+    {   
+        //dd($request);
+        $usuario = Empresa::findOrFail($id);
+        $usuario->update($request->all());
+        return redirect('empresa')->with('mensaje', 'Empresa actualizada con exito!!');
     }
 
+    // public function actualizar(Request $request)
+    // {   
+    //     $rules = array(
+    //         'nombre'  => 'required|unique:empresa|max:100',
+    //         'documento' => 'numeric|unique:empresa|required|min:10000|max:9999999999',
+    //         'tipo_documento' => 'required',
+    //         'activo' => 'required'
+    //     );
+
+    //     $error = Validator::make($request->all(), $rules);
+
+    //     if($error->fails()) {
+    //         return response()->json(['errors' => $error->errors()->all()]);
+    //     }
+
+    //     $datas = Empresa::findOrFail($request->hidden_id);
+    //     $datas->update($request->all());
+    //     return response()->json(['success' => 'ok']);
+    // }
     /**
      * Remove the specified resource from storage.
      *

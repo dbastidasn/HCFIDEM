@@ -1,6 +1,6 @@
 @extends("theme.$theme.layout")
 @section('titulo')
- Editar Empresa
+ Editar Usuario
 @endsection
 
 @section('scripts')
@@ -12,19 +12,20 @@
 <div class="col-lg-12">    
   @include('includes.form-error')
   @include('includes.form-mensaje')
-<div class="card card-warning">
+ <br> 
+<div class="card card-info">
     <div class="card-header">
-    <h3 class="card-title">Editar empresa {{$data->nombre}}</h3>
+    <h3 class="card-title">Editar cliente {{$data->nombres.' '.$data->apellidos}}</h3>
       <div class="card-tools pull-right">
-        <a href="{{route('empresa')}}" type="button" class="btn btn-block btn-info btn-sm">
+        <a href="{{route('cliente')}}" type="button" class="btn btn-block btn-success btn-sm">
               <i class="fa fa-fw fa-reply-all"></i> Volver al listado
         </a>
         </div>
     </div>
-  <form action="{{route('actualizar_empresa', ['id' => $data->id])}}" id="form-general" class="form-horizontal" method="POST">
+  <form action="{{route('actualizar_cliente', ['id' => $data->id])}}" id="form-general" class="form-horizontal" method="POST">
     @csrf @method('put')
     <div class="card-body">
-                      @include('admin.empresa.form-editar')
+                      @include('admin.cliente.form-editar')
                   </div>
                   <!-- /.card-body -->
                   <div class="card-footer">

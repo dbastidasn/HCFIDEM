@@ -17,7 +17,7 @@ class RolTablaSeeder extends Seeder
         $rols=[
 
             'administrador',
-            'movil',
+            'empresa',
             'supervisor'
 
         ];

@@ -1,7 +1,7 @@
 @extends("theme.$theme.layout")
 
 @section('titulo')
-    Empresa
+    Empleado
 @endsection
 @section("styles")
 <link href="{{asset("assets/$theme/plugins/datatables-bs4/css/dataTables.bootstrap4.css")}}" rel="stylesheet" type="text/css"/>       
@@ -9,54 +9,48 @@
 
 
 @section('scripts')
-<script src="{{asset("assets/pages/scripts/admin/empresa/crear.js")}}" type="text/javascript"></script>    
+<script src="{{asset("assets/pages/scripts/admin/empleado/crear.js")}}" type="text/javascript"></script>    
 @endsection
 
 @section('contenido')
 <div class="row">
     <div class="col-lg-12">
-        {{-- @include('includes.form-error')
-        @include('includes.form-mensaje') --}}
+        @include('includes.form-error')
+        @include('includes.form-mensaje')
      <br>   
     <div class="card card-warning">
         <div class="card-header with-border">
-          <h3 class="card-title">Empresa</h3>
+          <h3 class="card-title">Empleado</h3>
           <div class="card-tools pull-right">
-            <button type="button" name="create_empresa" id="create_empresa" class="btn btn-default" data-toggle="modal" data-target="#modal-u"><i class="fa fa-fw fa-plus-circle"></i>Crear Empresa</button>
+            <button type="button" name="create_empleado" id="create_empleado" class="btn btn-default" data-toggle="modal" data-target="#modal-u"><i class="fa fa-fw fa-plus-circle"></i>Crear Empleado</button>
             </button>
           </div>
         </div>
-      <div class="card-body table-responsive p-0">
+      <div class="card-body table-responsive p-2">
         
-      <table id="empresa" class="table table-hover table-bordered text-nowrap">
+      <table id="empleado" class="table table-hover  text-nowrap">
         {{-- <table id="empresa" class="table table-striped table-bordered"> --}}
         <thead>
         <tr>  
               <th>Editar</th>
               <th>Id</th>
-              <th>Nombre</th>
+              <th>Nombres</th>
+              <th>Apellidos</th>
               <th>Tipo de documento</th>
               <th>Documento</th>
+              <th>Pais</th>
+              <th>Ciudad</th>
+              <th>Barrio</th>
+              <th>Dirección</th>
+              <th>Celular</th>
+              <th>Telefono</th>
+              <th>Empresa</th>
               <th>Activo</th>
                            
         </tr>
         </thead>
         <tbody>
-            {{-- @foreach ($datas as $data1)
-            <tr>
-                 <td>
-                <a href="{{route('editar_empresa', ['id' => $data1->id])}}" class="btn-accion-tabla tooltipsC" title="Editar este registro">
-                  <i class="fa fa-fw fa-pencil-alt"></i>
-                </a>
-                </td>
-                <td>{{$data1->id}}</td>
-                <td>{{$data1->nombre}}</td>
-                <td>{{$data1->tipo_documento}}</td>
-                <td>{{$data1->documento}}</td>
-                <td>{{$data1->activo}}</td>
-                                
-            </tr>
-        @endforeach           --}}
+           
         </tbody>
       </table>
     </div>
@@ -66,14 +60,14 @@
 </div>
 </div>
 
-<!-- /.Modal crear usuario -->
+<!-- /.Modal crear empleado -->
     <div class="modal fade" tabindex="-1" id ="modal-u" role="dialog" aria-labelledby="myLargeModalLabel">
         <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">   
         <div class="row">
             <div class="col-lg-12">
-              {{-- @include('includes.form-error')
-              @include('includes.form-mensaje')     --}}
+              @include('includes.form-error')
+              @include('includes.form-mensaje')
                <div class="card card-warning">
                 <div class="card-header">
                      <h6 class="modal-title"></h6>
@@ -88,7 +82,7 @@
               <form id="form-general" name="form-general" class="form-horizontal" method="post">
                 @csrf
                 <div class="card-body">
-                              @include('admin.empresa.form')
+                              @include('admin.empleado.form')
                 </div>
                 <!-- /.card-body -->
                              <div class="card-footer">
@@ -112,45 +106,7 @@
 
 
 
-{{-- <!-- /.Modal actualizar usuario -->
-<div class="modal fade" tabindex="-1" id ="modal-a" role="dialog" aria-labelledby="myLargeModalLabel">
-  <div class="modal-dialog modal-xl" role="document">
-  <div class="modal-content">   
-  <div class="row">
-      <div class="col-lg-12">
-        @include('includes.form-error')
-        @include('includes.form-mensaje')    
-         <div class="card card-warning">
-          <div class="card-header">
-            <h3 class="card-title">Actualizar Empresa</h3>
-            <div class="card-tools pull-right">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-              </div>
-          </div>
-        <form action="" id="form-general" class="form-horizontal" method="POST">
-          @csrf
-          <div class="card-body">
-                            @include('admin.empresa.form-editar')
-                        </div>
-                        <!-- /.card-body -->
-                        <div class="card-footer">
-                          
-                            <div class="col-lg-3"></div>
-                            <div class="col-lg-6">
-                            @include('includes.boton-form-editar-empresa')    
-                          </div>
-                         </div>
-                        <!-- /.card-footer -->
-          </form>
-                   
-      
-         
-    </div>
-  </div>
-</div>
-</div>
-</div>
-</div> --}}
+
 
 
 @endsection
@@ -175,7 +131,7 @@
  $(document).ready(function(){
         //initiate dataTables plugin
       var datatable = 
-        $('#empresa')
+        $('#empleado')
         //.wrap("<div class='dataTables_borderWrap' />")   //if you are applying horizontal scrolling (sScrollX)
         .DataTable({
         language: idioma_espanol,
@@ -184,54 +140,62 @@
         processing: true,
         serverSide: true,
         ajax:{
-          url:"{{ route('empresa')}}",
+          url:"{{ route('empleado')}}",
               },
         columns: [
           {data:'editar'},
           {data:'id'},
-          {data:'nombre'},
+          {data:'nombres'},
+          {data:'apellidos'},
           {data:'tipo_documento'},
           {data:'documento'},
+          {data:'pais'},
+          {data:'ciudad'},
+          {data:'barrio'},
+          {data:'direccion'},
+          {data:'celular'},
+          {data:'telefono'},
+          {data:'empresa_id'}, 
           {data:'activo'},
           
         ],
 
          //Botones----------------------------------------------------------------------
      
-         "dom":'<"row"<"col-md-9 form-inline"l><"col-xs-3 form-inline"B>>rt<"row"<"col-md-8 form-inline"i> <"col-md-4 form-inline"p>>',
+         "dom":'<"row"<"col-xs-1 form-inline"><"col-md-4 form-inline"l><"col-md-5 form-inline"f><"col-md-3 form-inline"B>>rt<"row"<"col-md-8 form-inline"i> <"col-md-4 form-inline"p>>',
                    
-                   buttons: [
+         buttons: [
                       {
     
                    extend:'copyHtml5',
-                   titleAttr: 'Copy',
+                   titleAttr: 'Copiar Registros',
                    title:"seguimiento",
-                   className: "btn btn-info"
+                   className: "btn  btn-outline-primary btn-sm"
     
     
                       },
                       {
     
                    extend:'excelHtml5',
-                   titleAttr: 'Excel',
+                   titleAttr: 'Exportar Excel',
                    title:"seguimiento",
-                   className: "btn btn-success"
+                   className: "btn  btn-outline-success btn-sm"
     
     
                       },
                        {
     
                    extend:'csvHtml5',
-                   titleAttr: 'csv',
-                   className: "btn btn-warning"
-    
-    
+                   titleAttr: 'Exportar csv',
+                   className: "btn  btn-outline-warning btn-sm"
+                   //text: '<i class="fas fa-file-excel"></i>'
+                   
                       },
                       {
     
                    extend:'pdfHtml5',
-                   titleAttr: 'pdf',
-                   className: "btn btn-primary"
+                   titleAttr: 'Exportar pdf',
+                   className: "btn  btn-outline-secondary btn-sm"
     
     
                       }
@@ -242,8 +206,8 @@
     
         });
 
-$('#create_empresa').click(function(){
-  $('.modal-title').text('Agregar Nueva Empresa');
+$('#create_empleado').click(function(){
+  $('.modal-title').text('Agregar Nuevo Empleado');
   $('#action_button').val('Add');
   $('#action').val('Add');
   $('#form_result').html('');
@@ -256,17 +220,17 @@ $('#create_empresa').click(function(){
 
   if($('#action').val() == 'Add')
   {
-    url = "{{route('guardar_empresa')}}";
+    url = "{{route('guardar_empleado')}}";
   }  
 
   if($('#action').val() == 'Edit')
   {
     var updateid = $('#hidden_id').val();
-    url = "/empresa/"+updateid;
+    url = "/empleado/"+updateid;
   }  
     Swal.fire({
      title: "¿Estás seguro?",
-     text: "Estás por crear empresa",
+     text: "Estás por crear un empleado",
      icon: "success", 
      showCancelButton: true,
      showCloseButton: true,
@@ -284,8 +248,8 @@ $('#create_empresa').click(function(){
 
                     html = '<div class="alert alert-danger alert-dismissible" data-auto-dismiss="3000">'
                       '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'
-                        '<h5><i class="icon fas fa-check"></i> Mensaje Acuasur Rural</h5>';
-                                     //<div class = "alert alert-danger alert-dismissible" data-auto-dismiss="3000">';
+                        '<h5><i class="icon fas fa-check"></i> Mensaje Ventas</h5>';
+                                     
                     for (var count = 0; count < data.errors.length; count++)
                     {
                       html += '<p>' + data.errors[count]+'<p>';
@@ -295,8 +259,8 @@ $('#create_empresa').click(function(){
                     if(data.success == 'ok') {
                       $('#form-general')[0].reset();
                       $('#modal-u').modal('hide');
-                      $('#empresa').DataTable().ajax.reload();
-                      Manteliviano.notificaciones('Empresa creada correctamente', 'Sistema Ventas', 'success');
+                      $('#empleado').DataTable().ajax.reload();
+                      Manteliviano.notificaciones('Empleado creado correctamente', 'Sistema Ventas', 'success');
                       
                     } 
                     $('#form_result').html(html)  
@@ -311,114 +275,7 @@ $('#create_empresa').click(function(){
   });
 
 
-  // $(document).on('click', '#edit', function(){
-  //   var id = $(this).attr('id');
-  //   $('#form_result').html('');
-  //   $.ajax({
-  //       url:"http://127.0.0.1:8000/empresa/1/editar",
-  //       dataType: "json",
-  //       success:function(data){
-  //         $('#nombre').val(data.result.nombre);
-  //         //$('#tipo_documento').val(data.result.tipo_documento);
-  //         $('#documento').val(data.result.documento);
-  //         //$('#activo').val(data.result.activo);
-  //         $('#hidden_id').val(id);
-  //         $('.modal-title  ').text('Editar Registro');
-  //         $('#action_button').val('Edit');
-  //         $('#action').val('Edit');
-  //         $('#modal-u').modal('show');
-
-  //       }
-  //   })
-  // });
-
-// $('#form-general').on('click', '#guardar',  function(){
-  
-  
-//   var nombre = $('#nombre').val();
-//   var tipo_documento = $('#tipo_documento').val();
-//   var documento = $('#documento').val();
-//   var activo = $('#activo').val();
-  
-//   if(nombre == '' || tipo_documento == '' || documento == '' || activo == ''){
-
-//         Swal.fire({
-//          title: 'Debes rellenar todos los campos',
-//          icon: 'warning',
-//          buttons:{
-//              cancel: "Cerrar"
-             
-//                  }
-//            }) 
-
-//   }else{
-//      Swal.fire({
-//      title: "¿Estás seguro?",
-//      text: "Estás por crear empresa",
-//      icon: "success",
-//      showCancelButton: true,
-//      showCloseButton: true,
-//      confirmButtonText: 'Aceptar',
-//      }).then((result)=>{
-//     if(result.value){  
-//        $.ajax({
-        
-//              url:"{{route('guardar_empresa')}}",
-//              method:'post',
-//              data:{nombre:nombre, tipo_documento:tipo_documento, documento:documento, activo:activo,
-//               "_token": $("meta[name='csrf-token']").attr("content")},
-
-//              success:function(respuesta)
-//              {  
-//               if(respuesta.mensaje = 'ok') {
-//                $('#modal-u').modal('hide');
-//                $('#empresa').DataTable().ajax.reload();
-               
-//                Manteliviano.notificaciones('Empresa creada correctamente', 'Sistema Ventas', 'success');
-//                }else if(respuesta.mensaje = 'ng'){
-              
-//                  $('#empresa').DataTable().ajax.reload();
-//                  Manteliviano.notificaciones('Nombre o Documento ya estan registrados, documento debe ser numerico', 'Sistema Ventas', 'warning');
-//              }
-//              }
-            
-//               }).fail( function( jqXHR, textStatus, errorThrown ) {
-
-//           if (jqXHR.status === 0) {
-
-//             alert('Not connect: Verify Network.');
-
-//           } else if (jqXHR.status == 404) {
-
-//             alert('Requested page not found [404]');
-
-//           } else if (jqXHR.status == 422) {
-//                  Manteliviano.notificaciones('Nombre o Documento ya estan registrados, documento debe ser numerico y menor de 9999999999','Sistema Ventas',  'warning'); 
-              
-            
-//           } else if (textStatus === 'parsererror') {
-
-//             alert('Requested JSON parse failed.');
-
-//           } else if (textStatus === 'timeout') {
-
-//             alert('Time out error.');
-
-//           } else if (textStatus === 'abort') {
-
-//             alert('Ajax request aborted.');
-
-//           }       
-            
-//               });
-
-//   }
-
-// });
-
-//   }
-// })
-
+ 
 
 // $(document).on('click', function(Mostrar){
   

@@ -16,11 +16,11 @@ class CreatePrestamoTable extends Migration
         Schema::create('prestamo', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('monto');
-            $table->integer('monto_pendiente');
-            $table->unsignedBigInteger('tipo_pago');
+            $table->integer('monto_pendiente')->nullable();
+            $table->string('tipo_pago', 50);
             $table->integer('cuotas');
-            $table->integer('numero_cuota');
-            $table->integer('cuotas_pendientes');
+            $table->integer('numero_cuota')->nullable();
+            $table->integer('cuotas_pendientes')->nullable();
             $table->decimal('interes',15,2);
             $table->decimal('monto_total',15,2);
             $table->decimal('valor_cuota',15,2);
@@ -34,7 +34,6 @@ class CreatePrestamoTable extends Migration
             $table->unsignedBigInteger('cliente_id');
             $table->foreign('usuario_id', 'fk_prestamoid_usuarioid')->references('id')->on('usuario')->onDelete('restrict')->onUpdate('restrict');
             $table->foreign('cliente_id', 'fk_prestamoid_clienteid')->references('id')->on('cliente')->onDelete('restrict')->onUpdate('restrict');
-            $table->foreign('tipo_pago', 'fk_prestamoid_tipo_pagoid')->references('id')->on('tipo_pago')->onDelete('restrict')->onUpdate('restrict');
             $table->timestamps();
         });
     }

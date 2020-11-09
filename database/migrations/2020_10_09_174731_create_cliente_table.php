@@ -19,8 +19,8 @@ class CreateClienteTable extends Migration
             $table->string('apellidos',100);
             $table->string('tipo_documento',50);
             $table->integer('documento');
-            $table->integer('telefono')->nullable();
-            $table->integer('celular');
+            $table->string('telefono',50)->nullable();
+            $table->string('celular',50);
             $table->string('direccion',150);
             $table->string('estado',50);
             $table->string('pais',50)->nullable();
@@ -29,7 +29,7 @@ class CreateClienteTable extends Migration
             $table->string('sector',50)->nullable();
             $table->integer('consecutivo');
             $table->char('activo',1);
-            $table->string('observacion',100);
+            $table->string('observacion',200)->nullable();
             $table->unsignedBigInteger('usuario_id');
             $table->foreign('usuario_id', 'fk_clienteid_usuarioid')->references('id')->on('usuario')->onDelete('restrict')->onUpdate('restrict');
             $table->timestamps();

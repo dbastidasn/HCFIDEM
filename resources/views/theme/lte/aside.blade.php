@@ -6,8 +6,8 @@
            alt="Sinteco"
            class="brand-image img-circle elevation-2"
            style="opacity: .8">
-      <span class="brand-text font-weight-light">AcuasurRural</span>
-    </a>
+      <span class="brand-text font-weight-light">Admin-VENTAS</span>
+    </a>  
 
     <!-- Sidebar -->
     <div class="sidebar sidebar-light-info sidebar-collapse">
@@ -17,7 +17,7 @@
           <img src="{{asset("assets/$theme/dist/img/user_default.jpg  ")}}" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block">{{Session()->get('nombre_usuario') ?? ''}}</a>
+          <a href="#" class="d-block">{{Session()->get('usuario') ?? ''}}</a>
         </div>
       </div>
 
@@ -30,7 +30,7 @@
            </div>
           <div class="info">
             <i class="nav-item has-treeview">
-            <H5 align="center"> Menú Principal</H5>
+            <H5 alignt="center"> Menú Principal</H5>
             </i>
          </div>
           </div>

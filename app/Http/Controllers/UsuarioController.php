@@ -6,9 +6,12 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ValidacionUsuario;
+use App\Models\Admin\Empleado;
+use App\Models\Admin\Empresa;
 use App\Models\Admin\Rol;
 use App\Models\Seguridad\Usuario;
 use Barryvdh\DomPDF\Facade as PDF;
+use Illuminate\Support\Facades\DB;
 use PHPUnit\TextUI\ResultPrinter;
 
 
@@ -19,12 +22,38 @@ class UsuarioController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {  
-    
+        $empleado_id = $request->session()->get('empleado_id');
+
+        $empresaLogin = DB::table('empleado')->Join('empresa', 'empleado.empresa_id', '=', 'empresa.id')
+        ->where('empleado.id', '=', $empleado_id)->select('empleado.empresa_id')->get();
+
+       if($request->session()->get('rol_id') == 1){
+        
+        $Empleados = DB::table('empleado')->leftJoin('usuario', 'empleado.id', '=', 'usuario.empleado_id')
+        ->where('usuario.empleado_id', '=', null)->pluck('empleado.nombres','empleado.id')->toArray();
         $Rols1 = Rol::orderBy('id')->pluck('nombre', 'id')->toArray();
-        $datas = Usuario::with('roles1:id,nombre')->orderBy('id')->get();
-        return view('admin.usuario.index', compact('datas','Rols1'));
+
+        $datas = DB::table('usuario')->Join('empleado', 'usuario.empleado_id', '=', 'empleado.id')
+        ->Join('usuario_rol', 'usuario.id', '=', 'usuario_rol.usuario_id')
+        ->select('usuario.id', 'empleado.nombres',
+        'usuario.usuario', 'usuario.tipo_de_usuario', 'usuario.email', 'empleado.empresa_id', 'usuario.activo', 'usuario_rol.rol_id')->get();
+
+       }else{
+
+        $Empleados = DB::table('empleado')->leftJoin('usuario', 'empleado.id', '=', 'usuario.empleado_id')
+        ->where('usuario.empleado_id', '=', null)->pluck('empleado.nombres','empleado.id')->toArray();
+        $Rols1 = Rol::orderBy('id')->where([['id', '!=', 1],['id', '!=', 2]])->pluck('nombre', 'id')->toArray();
+        
+        foreach($empresaLogin as $empresa){
+        $datas = DB::table('usuario')->Join('empleado', 'usuario.empleado_id', '=', 'empleado.id')
+        ->Join('usuario_rol', 'usuario.id', '=', 'usuario_rol.usuario_id')
+        ->where('empleado.empresa_id', '=',$empresa->empresa_id)->select('usuario.id', 'empleado.nombres',
+        'usuario.usuario', 'usuario.tipo_de_usuario', 'usuario.email', 'empleado.empresa_id', 'usuario.activo', 'usuario_rol.rol_id')->get();
+            }
+        }
+         return view('admin.usuario.index', compact('datas','Rols1','Empleados'));
     }
 
     /**
@@ -45,7 +74,7 @@ class UsuarioController extends Controller
      */
     public function guardar(ValidacionUsuario $request)
     {
-        $usuario = Usuario::create($request->all());
+        $usuario = Usuario::create($request->all());    
         $usuario->roles1()->attach($request->rol_id);
 
         return redirect('usuario')->with('mensaje', 'Usuario creado con exito');
@@ -64,10 +93,23 @@ class UsuarioController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function editar($id)
-    {   $Rols1 = Rol::orderBy('id')->pluck('nombre', 'id')->toArray();
-        $data = Usuario::with('roles1')->findOrFail($id);
-        return view('admin.usuario.editar', compact('data','Rols1'));
+    public function editar(Request $request, $id)
+    {   
+        if($request->session()->get('rol_id') == 1)
+        {   
+            $Empleados = DB::table('empleado')->leftJoin('usuario', 'empleado.id', '=', 'usuario.empleado_id')
+            ->pluck('empleado.nombres','empleado.id')->toArray();
+            $Rols1 = Rol::orderBy('id')->pluck('nombre', 'id')->toArray();
+            $data = Usuario::with('roles1')->findOrFail($id);
+
+        }else{   
+            $Empleados = DB::table('empleado')->leftJoin('usuario', 'empleado.id', '=', 'usuario.empleado_id')
+            ->pluck('empleado.nombres','empleado.id')->toArray();
+            $Rols1 = Rol::orderBy('id')->where([['id', '!=', 1],['id', '!=', 2]])->pluck('nombre', 'id')->toArray();
+            $data = Usuario::with('roles1')->findOrFail($id);
+        }
+       
+        return view('admin.usuario.editar', compact('data','Rols1','Empleados'));
     }
     
     public function editarpassword($id)

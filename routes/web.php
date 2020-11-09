@@ -47,6 +47,13 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['aut
      Route::get('menu-rol', 'MenuRolController@index')->name('menu_rol');
      Route::post('menu-rol', 'MenuRolController@guardar')->name('guardar_menu_rol');
      
+     /* RUTAS DE LA EMPRESA */
+     Route::get('empresa', 'EmpresaController@index')->name('empresa');
+     Route::get('empresa/crear', 'EmpresaController@crear')->name('crear_empresa');
+     Route::post('empresa', 'EmpresaController@guardar')->name('guardar_empresa');
+     Route::get('empresa/{id}/editar', 'EmpresaController@editar')->name('editar_empresa');
+     Route::put('empresa/{id}', 'EmpresaController@actualizar')->name('actualizar_empresa');
+
      /* RUTAS DEL PERMISO */
      Route::get('permiso', 'PermisoController@index')->name('permiso');
      Route::get('permiso/crear', 'PermisoController@crear')->name('crear_permiso');
@@ -76,6 +83,37 @@ Route::get('usuario/{id}/editar', 'UsuarioController@editar')->name('editar_usua
 Route::get('usuario/{id}/password', 'UsuarioController@editarpassword')->name('editar_password')->middleware('superEditor');
 Route::put('usuario/{id}', 'UsuarioController@actualizar')->name('actualizar_usuario')->middleware('superEditor');
 Route::put('password/{id}', 'UsuarioController@actualizarpassword')->name('actualizar_password')->middleware('superEditor');
+
+
+/* RUTAS DEL EMPLEADO */
+Route::get('empleado', 'empleadoController@index')->name('empleado')->middleware('superEditor');
+Route::get('empleado/crear', 'empleadoController@crear')->name('crear_empleado')->middleware('superEditor');
+Route::post('empleado', 'empleadoController@guardar')->name('guardar_empleado')->middleware('superEditor');
+Route::get('empleado/{id}/editar', 'empleadoController@editar')->name('editar_empleado')->middleware('superEditor');
+Route::put('empleado/{id}', 'empleadoController@actualizar')->name('actualizar_empleado')->middleware('superEditor');
+
+/* RUTAS DEL CLIENTE */
+Route::get('cliente', 'clienteController@index')->name('cliente')->middleware('superEditor');
+Route::get('cliente/crear', 'clienteController@crear')->name('crear_cliente')->middleware('superEditor');
+Route::post('cliente', 'clienteController@guardar')->name('guardar_cliente')->middleware('superEditor');
+Route::get('cliente/{id}/editar', 'clienteController@editar')->name('editar_cliente')->middleware('superEditor');
+Route::put('cliente/{id}', 'clienteController@actualizar')->name('actualizar_cliente')->middleware('superEditor');
+
+/* RUTAS DEL PRESTAMO */
+Route::get('prestamo', 'prestamoController@index')->name('prestamo')->middleware('superEditor');
+Route::get('prestamo/crear', 'prestamoController@crear')->name('crear_prestamo')->middleware('superEditor');
+Route::post('prestamo', 'prestamoController@guardar')->name('guardar_prestamo')->middleware('superEditor');
+Route::get('prestamo/{id}/editar', 'prestamoController@editar')->name('editar_prestamo')->middleware('superEditor');
+Route::get('prestamo/{id}', 'prestamoController@detalle')->name('detalle_prestamo')->middleware('superEditor');
+Route::put('prestamo/{id}', 'prestamoController@actualizar')->name('actualizar_prestamo')->middleware('superEditor');
+
+
+/* RUTAS DEL PAGO */
+Route::get('pago', 'pagoController@index')->name('pago')->middleware('superEditor');
+Route::get('pago/crear', 'pagoController@crear')->name('crear_pago')->middleware('superEditor');
+Route::post('pago', 'pagoController@guardar')->name('guardar_pago')->middleware('superEditor');
+Route::get('pago/{id}/editar', 'pagoController@editar')->name('editar_pago')->middleware('superEditor');
+Route::put('pago/{id}', 'pagoController@actualizar')->name('actualizar_pago')->middleware('superEditor');
 
 
 /* RUTAS DEL USUARIO NO ADMIN PARA CONTRASEÑA */
@@ -118,9 +156,7 @@ Route::post('adicionar_critica', 'OrdenesmtlasignarController@adicionarcritica')
 Route::post('eliminar_critica', 'OrdenesmtlasignarController@eliminarcritica')->name('eliminar_critica');
 });
 
-/* RUTAS DEL USUARIO */
-Route::get('empresa', 'Admin\EmpresaController@index')->name('empresa');
-Route::get('empresa/crear', 'Admin\EmpresaController@crear')->name('crear_empresa');
-Route::post('empresa', 'Admin\EmpresaController@guardar')->name('guardar_empresa');
-Route::get('empresa/{id}/editar', 'Admin\EmpresaController@editar')->name('editar_empresa');
-Route::put('empresa/{id}', 'Admin\EmpresaController@actualizar')->name('actualizar_empresa');
+
+
+
+

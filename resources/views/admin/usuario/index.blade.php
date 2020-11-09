@@ -26,21 +26,21 @@
             </button>
           </div>
         </div>
-      <div class="card-body table-responsive p-0">
+      <div class="card-body table-responsive p-2">
         
-      <table id="usuarios" class="table table-hover table-bordered text-nowrap">
+      <table id="usuarios" class="table table-hover  text-nowrap">
+        {{-- class="table table-hover table-bordered text-nowrap" --}}
         <thead>
         <tr>
                <th class="btn-accion-tabla tooltipsC" title="Editar este registro"><i class="fa fa-fw fa-pencil-alt"></i></th>
               <th class="btn-accion-tabla tooltipsC" title="Editar password"><i class="fas fa-key"></i></th>    
               <th>Id</th>
-              <th>Usuario</th>
               <th>Nombre</th>
+              <th>Usuario</th>
               <th>Tipo de Usuario</th>
               <th>Email</th>
               <th>Empresa</th>
-              <th>Password</th>
-              <th>Estado</th>
+              <th>Activo</th>
               <th>Rol</th>
              
         </tr>
@@ -59,20 +59,15 @@
                 </a>
                 </td>
                 <td>{{$data1->id}}</td>
+                <td>{{$data1->nombres}}</td>
                 <td>{{$data1->usuario}}</td>
-                <td>{{$data1->nombre}}</td>
-                <td>{{$data1->tipodeusuario}}</td>
+                <td>{{$data1->tipo_de_usuario}}</td>
                 <td>{{$data1->email}}</td>
-                <td>{{$data1->empresa}}</td>
-                <td>{{$data1->password}}</td>
-                <td>{{$data1->estado}}</td>
+                <td>{{$data1->empresa_id}}</td>
+                <td>{{$data1->activo}}</td>
                 <td>
-                    @foreach($data1->roles1 as $rol)
-                    
-                    {{$rol->nombre}}    
-                        
-                    @endforeach
-                    
+                    {{$data1->rol_id}}    
+                                         
                 </td>
             </tr>
         @endforeach          
@@ -156,44 +151,45 @@
 
          //Botones----------------------------------------------------------------------
      
-         "dom":'<"row"<"col-md-9 form-inline"l><"col-xs-3 form-inline"B>>rt<"row"<"col-md-8 form-inline"i> <"col-md-4 form-inline"p>>',
+         "dom":'<"row"<"col-xs-1 form-inline"><"col-md-4 form-inline"l><"col-md-5 form-inline"f><"col-md-3 form-inline"B>>rt<"row"<"col-md-8 form-inline"i> <"col-md-4 form-inline"p>>',
                    
-                   buttons: [
+         buttons: [
                       {
     
                    extend:'copyHtml5',
-                   titleAttr: 'Copy',
+                   titleAttr: 'Copiar Registros',
                    title:"seguimiento",
-                   className: "btn btn-info"
+                   className: "btn  btn-outline-primary btn-sm"
     
     
                       },
                       {
     
                    extend:'excelHtml5',
-                   titleAttr: 'Excel',
+                   titleAttr: 'Exportar Excel',
                    title:"seguimiento",
-                   className: "btn btn-success"
+                   className: "btn  btn-outline-success btn-sm"
     
     
                       },
                        {
     
                    extend:'csvHtml5',
-                   titleAttr: 'csv',
-                   className: "btn btn-warning"
-    
-    
+                   titleAttr: 'Exportar csv',
+                   className: "btn  btn-outline-warning btn-sm"
+                   //text: '<i class="fas fa-file-excel"></i>'
+                   
                       },
                       {
     
                    extend:'pdfHtml5',
-                   titleAttr: 'pdf',
-                   className: "btn btn-primary"
+                   titleAttr: 'Exportar pdf',
+                   className: "btn  btn-outline-secondary btn-sm"
     
     
                       }
                    ],
+
         
     
         });
