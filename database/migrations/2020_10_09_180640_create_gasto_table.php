@@ -19,6 +19,7 @@ class CreateGastoTable extends Migration
             $table->string('descripcion', 150);
             $table->unsignedBigInteger('usuario_id');
             $table->foreign('usuario_id', 'fk_gastoid_usuarioid')->references('id')->on('usuario')->onDelete('restrict')->onUpdate('restrict');
+            $table->dateTime('delete_at')->nullable();
             $table->timestamps();
         });
     }

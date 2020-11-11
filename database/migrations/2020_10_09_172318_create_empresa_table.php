@@ -19,6 +19,7 @@ class CreateEmpresaTable extends Migration
             $table->string('tipo_documento',50);
             $table->integer('documento');
             $table->char('activo',1);
+            $table->dateTime('delete_at')->nullable();
             $table->timestamps();
         });
     }

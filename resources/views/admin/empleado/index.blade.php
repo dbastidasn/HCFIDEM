@@ -221,16 +221,20 @@ $('#create_empleado').click(function(){
   if($('#action').val() == 'Add')
   {
     url = "{{route('guardar_empleado')}}";
+    method = 'post';
+    text = "Estás por crear un empleado";
   }  
 
   if($('#action').val() == 'Edit')
   {
     var updateid = $('#hidden_id').val();
     url = "/empleado/"+updateid;
+    method = 'put';
+    text = "Estás por actualizar un empleado";
   }  
     Swal.fire({
      title: "¿Estás seguro?",
-     text: "Estás por crear un empleado",
+     text: text,
      icon: "success", 
      showCancelButton: true,
      showCloseButton: true,
@@ -239,7 +243,7 @@ $('#create_empleado').click(function(){
     if(result.value){ 
     $.ajax({
            url:url,
-           method:'post',
+           method:method,
            data:$(this).serialize(),
            dataType:"json",
            success:function(data){
@@ -262,6 +266,12 @@ $('#create_empleado').click(function(){
                       $('#empleado').DataTable().ajax.reload();
                       Manteliviano.notificaciones('Empleado creado correctamente', 'Sistema Ventas', 'success');
                       
+                    }else if(data.success == 'ok1'){
+                      $('#form-general')[0].reset();
+                      $('#modal-u').modal('hide');
+                      $('#empleado').DataTable().ajax.reload();
+                      Manteliviano.notificaciones('Empleado actualizado correctamente', 'Sistema Ventas', 'success');
+
                     } 
                     $('#form_result').html(html)  
               }
@@ -275,23 +285,48 @@ $('#create_empleado').click(function(){
   });
 
 
- 
+ // Edición de cliente
 
-// $(document).on('click', function(Mostrar){
-  
-//   var id = $(this).attr('id');
-//   $.ajax({
-//     url:"http://127.0.0.1:8000/empresa/"+id+"/editar",
-//     dataType:"json",
-//     success:function(data){
-//       $('#nombre').val(data.nombre);
-//       $('#tipo_documento').val(data.tipo_documento);
-//       $('#documento').val(data.documento);
-//       $('#activo').val(data.activo);
-//       $('#modal-a').modal('show');
-//     }
+ $(document).on('click', '.edit', function(){
+    var id = $(this).attr('id');
+    
+  $.ajax({
+    url:"http://127.0.0.1:8000/empleado/"+id+"/editar",
+    dataType:"json",
+    success:function(data){
+      $('#nombres').val(data.result.nombres);
+      $('#apellidos').val(data.result.apellidos);
+      $('#tipo_documento').val(data.result.tipo_documento);
+      $('#documento').val(data.result.documento);
+      $('#pais').val(data.result.pais);
+      $('#empresa_id').val(data.result.empresa_id);
+      $('#ciudad').val(data.result.ciudad);
+      $('#barrio').val(data.result.barrio);
+      $('#sector').val(data.result.sector);
+      $('#direccion').val(data.result.direccion);
+      $('#celular').val(data.result.celular);
+      $('#telefono').val(data.result.telefono);
+      $('#activo').val(data.result.activo);
+      $('#hidden_id').val(id);
+      $('.modal-title').text('Editar Cliente');
+      $('#action_button').val('Edit');
+      $('#action').val('Edit');
+      $('#modal-u').modal('show');
+     
+    }
+    
 
-//   })
+  }).fail( function( jqXHR, textStatus, errorThrown ) {
+
+if (jqXHR.status === 403) {
+
+  Manteliviano.notificaciones('No tienes permisos para realizar esta accion', 'Sistema Ventas', 'warning');
+
+}});
+
+ });
+
+
 
 });
 

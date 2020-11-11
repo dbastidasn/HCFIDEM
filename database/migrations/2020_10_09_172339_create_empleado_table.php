@@ -28,6 +28,8 @@ class CreateEmpleadoTable extends Migration
             $table->char('activo',1);
             $table->unsignedBigInteger('empresa_id');
             $table->foreign('empresa_id', 'fk_empresaid_empleadoid')->references('id')->on('empresa')->onDelete('restrict')->onUpdate('restrict');
+            $table->integer('base')->nullable();
+            $table->dateTime('delete_at')->nullable();
             $table->timestamps();
         });
     }

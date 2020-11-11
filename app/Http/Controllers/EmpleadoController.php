@@ -34,15 +34,15 @@ class EmpleadoController extends Controller
                                  
                 $datas = Empleado::orderBy('id')->get();
                 return  DataTables()->of($datas)
-                ->addColumn('editar', '<a href="{{url("empleado/$id/editar")}}" class="btn-accion-tabla tooltipsC" title="Editar este empleado">
-                      <i class="fa fa-fw fa-pencil-alt"></i>
-                    </a>')
-            //     ->addColumn('editar', function($datas){
-            //   $button = '<button type="button" name="edit" id="'.$datas->id.'"
-            //   class"edit btn btn-primary btn-sm">Editar</button>';
-            //   return $button;
+                // ->addColumn('editar', '<a href="{{url("empleado/$id/editar")}}" class="btn-accion-tabla tooltipsC" title="Editar este empleado">
+                //       <i class="fa fa-fw fa-pencil-alt"></i>
+                //     </a>')
+                ->addColumn('editar', function($datas){
+              $button = '<button type="button" name="edit" id="'.$datas->id.'"
+              class = "edit btn btn-primary btn-sm">Editar</button>';
+              return $button;
     
-            //     }) 
+                }) 
                 ->rawColumns(['editar'])
                 ->make(true);
                     
@@ -67,15 +67,15 @@ class EmpleadoController extends Controller
                              
             $datas = Empleado::where('empresa_id', '=', $empresa->empresa_id)->orderBy('id')->get();
             return  DataTables()->of($datas)
-            ->addColumn('editar', '<a href="{{url("empleado/$id/editar")}}" class="btn-accion-tabla tooltipsC" title="Editar este empleado">
-                  <i class="fa fa-fw fa-pencil-alt"></i>
-                </a>')
-        //     ->addColumn('editar', function($datas){
-        //   $button = '<button type="button" name="edit" id="'.$datas->id.'"
-        //   class"edit btn btn-primary btn-sm">Editar</button>';
-        //   return $button;
+            // ->addColumn('editar', '<a href="{{url("empleado/$id/editar")}}" class="btn-accion-tabla tooltipsC" title="Editar este empleado">
+            //       <i class="fa fa-fw fa-pencil-alt"></i>
+            //     </a>')
+            ->addColumn('editar', function($datas){
+          $button = '<button type="button" name="edit" id="'.$datas->id.'"
+          class = "edit btn btn-primary btn-sm">Editar</button>';
+          return $button;
 
-        //     }) 
+            }) 
             ->rawColumns(['editar'])
             ->make(true);
                 }
@@ -147,11 +147,15 @@ class EmpleadoController extends Controller
     public function editar($id)
     { 
 
-            $empresa = Empresa::orderBy('id')->pluck('id','nombre');
-            $data = Empleado::findOrFail($id);
+        $empresa = Empresa::orderBy('id')->pluck('id','nombre')->toArray();
         
+        if(request()->ajax()){
+            $data = Empleado::findOrFail($id);
+            return response()->json(['result'=>$data]);
+        
+        }
       
-        return view('admin.empleado.editar', compact('data','empresa'));
+        return view('admin.empleado.index', compact('data','empresa'));
 
     }
 
@@ -164,9 +168,13 @@ class EmpleadoController extends Controller
      */
     public function actualizar(ValidacionEmpleado $request, $id)
     {
+        if(request()->ajax()){
         $usuario = Empleado::findOrFail($id);
         $usuario->update($request->all());
+        return response()->json(['success' => 'ok1']);
+        }
         return redirect('empleado')->with('mensaje', 'Empresa actualizada con exito!!');
+    
     }
 
     /**

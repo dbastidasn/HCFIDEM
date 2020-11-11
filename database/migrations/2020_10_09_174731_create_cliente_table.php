@@ -32,6 +32,7 @@ class CreateClienteTable extends Migration
             $table->string('observacion',200)->nullable();
             $table->unsignedBigInteger('usuario_id');
             $table->foreign('usuario_id', 'fk_clienteid_usuarioid')->references('id')->on('usuario')->onDelete('restrict')->onUpdate('restrict');
+            $table->dateTime('delete_at')->nullable();
             $table->timestamps();
         });
     }

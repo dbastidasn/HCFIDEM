@@ -19,7 +19,8 @@ if(version_compare(PHP_VERSION, '7.2.0', '>=')) { error_reporting(E_ALL ^ E_NOTI
 /* RUTAS IMAGENES TEXTO */
 
 Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
-Route::get('/', 'Admin\InicioController@index')->name('inicio');
+//Route::get('/', 'Admin\InicioController@index')->name('inicio');
+Route::get('/', 'Seguridad\LoginController@index')->name('inicio');
 Route::get('seguridad/login', 'Seguridad\LoginController@index')->name('login');
 Route::post('seguridad/login', 'Seguridad\LoginController@login')->name('login_post');
 Route::get('seguridad/logout', 'Seguridad\LoginController@logout')->name('logout');

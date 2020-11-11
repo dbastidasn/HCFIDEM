@@ -18,7 +18,9 @@ class DatabaseSeeder extends Seeder
             'empresa',
             'empleado',
             'usuario',
-            'usuario_rol'
+            'usuario_rol',
+            'menu',
+            'menu_rol',
 
         ]
 

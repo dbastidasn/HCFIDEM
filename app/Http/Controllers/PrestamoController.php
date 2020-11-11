@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Admin\Cliente;
 use App\Models\Admin\Prestamo;
+use App\Models\Seguridad\Usuario;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -16,9 +18,17 @@ class PrestamoController extends Controller
      */
     public function index(Request $request)
     {
+        $usuario_id = $request->session()->get('usuario_id');
+        
+        $clientes = Cliente::where('usuario_id', '=', $usuario_id )->get();
+                            
+        $usuarios = Usuario::orderBy('id')->where('id', '=', $usuario_id)->pluck('usuario', 'id')->toArray();
+
+     
         if($request->ajax()){
 
-            $datas = Prestamo::orderBy('id')->get();
+            $datas = DB::table('prestamo')->Join('cliente', 'prestamo.cliente_id', '=', 'cliente.id')
+            ->where('prestamo.usuario_id', '=', $usuario_id)->get();
             return  DataTables()->of($datas)
             // ->addColumn('editar', '<a href="{{url("cliente/$id/editar")}}" class="btn-accion-tabla tooltipsC" title="Editar este cliente">
             //       <i class="fa fa-fw fa-pencil-alt"></i>
@@ -36,7 +46,7 @@ class PrestamoController extends Controller
             ->rawColumns(['action'])
             ->make(true);
             }
-        return view('admin.prestamo.index', compact('usuarios', 'datas'));
+        return view('admin.prestamo.index', compact('usuarios', 'datas','clientes'));
     }
 
     /**
@@ -91,7 +101,7 @@ class PrestamoController extends Controller
         if(request()->ajax()){
 
         $data = DB::table('prestamo')->Join('cliente', 'prestamo.cliente_id', '=', 'cliente.id')
-            ->where('prestamo.cliente_id', '=', $id)->first();
+            ->where('prestamo.cliente_id', '=', $id)->get();
 
         // $data = Prestamo::with('Cliente:nombres')->where('cliente_id', $id)->first();
             return response()->json(['result'=>$data]);

@@ -1,3 +1,3 @@
-@include("theme.$theme.layoutInicio")
+@include("theme.$theme.layout")
 
 @include('includes.form-mensaje')

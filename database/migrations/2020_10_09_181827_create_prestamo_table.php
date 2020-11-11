@@ -19,6 +19,7 @@ class CreatePrestamoTable extends Migration
             $table->integer('monto_pendiente')->nullable();
             $table->string('tipo_pago', 50);
             $table->integer('cuotas');
+            $table->integer('cuotas_atrasadas')->nullable();
             $table->integer('numero_cuota')->nullable();
             $table->integer('cuotas_pendientes')->nullable();
             $table->decimal('interes',15,2);
@@ -27,6 +28,7 @@ class CreatePrestamoTable extends Migration
             $table->date('fecha_inicial');
             $table->date('fecha_final');
             $table->string('observacion',100)->nullable();
+            $table->char('estado',1);
             $table->char('activo',1);
             $table->string('latitud', 100)->nullable();
             $table->string('longitud',100)->nullable();            
@@ -34,6 +36,7 @@ class CreatePrestamoTable extends Migration
             $table->unsignedBigInteger('cliente_id');
             $table->foreign('usuario_id', 'fk_prestamoid_usuarioid')->references('id')->on('usuario')->onDelete('restrict')->onUpdate('restrict');
             $table->foreign('cliente_id', 'fk_prestamoid_clienteid')->references('id')->on('cliente')->onDelete('restrict')->onUpdate('restrict');
+            $table->dateTime('delete_at')->nullable();
             $table->timestamps();
         });
     }

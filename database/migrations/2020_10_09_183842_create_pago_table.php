@@ -26,6 +26,7 @@ class CreatePagoTable extends Migration
             $table->unsignedBigInteger('usuario_id');
             $table->foreign('usuario_id', 'fk_pagoid_usuarioid')->references('id')->on('usuario')->onDelete('restrict')->onUpdate('restrict');
             $table->foreign('prestamo_id', 'fk_pagoid_prestamoid')->references('id')->on('prestamo')->onDelete('restrict')->onUpdate('restrict');
+            $table->dateTime('delete_at')->nullable();
             $table->timestamps();
         });
     }

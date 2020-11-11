@@ -179,28 +179,196 @@
     <div class="card-header">
       <h6 class="modal-title-d"></h6>
       <div class="card-tools pull-right">
-          <button type="button" class="btn btn-block bg-gradient-primary btn-sm" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         </div>
     </div>
-    <div class="card-body"  id="detalle" style="display: block;">
-      {{-- <!--tabla -->
-      <div  class="card-body table-responsive p-2">
-        
-      <table id="detalle" class="table table-
-      hover  text-nowrap">  
+    <div class="card-body" id="" style="display: block;">
+     
+      <div class="row">
+
+      <div class="col-12">
+        <div class="info-box bg-info">
+          <span class="info-box-icon"><i class="far fa-bookmark"></i></span>
+
+          <div class="info-box-content">
+            <span class="info-box-text">Nombre Cliente</span>
+            <span class="info-box-number-nombre"></span>
+            <span class="info-box-number-apellido"></span>
+
+            <div class="progress">
+              <div class="progress-bar" style="width: 100%"></div>
+            </div>
             
-      </table>
-      </div> --}}
-      <!-- /.class-table-responsive -->
-  
+          </div>
+          <!-- /.info-box-content -->
+        </div>
+        <!-- /.info-box -->
+      </div>
+    </div>
+      <div class="row">
+        <div class="col-md-3 col-sm-6 col-12">
+          <div class="info-box bg-info">
+            <span class="info-box-icon"><i class="fas fa-money-check-alt"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Monto</span>
+              <span class="info-box-number-monto"></span>
+
+              <div class="progress">
+                <div class="progress-bar" style="width: 100%"></div>
+              </div>
+              
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+        <div class="col-md-3 col-sm-6 col-12">
+          <div class="info-box bg-success">
+            <span class="info-box-icon"><i class="fas fa-hashtag"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Cantidad de Cuotas</span>
+              <span class="info-box-number-cuotas"></span>
+
+              <div class="progress">
+                <div class="progress-bar" style="width: 100%"></div>
+              </div>
+              
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+        <div class="col-md-3 col-sm-6 col-12">
+          <div class="info-box bg-warning">
+            <span class="info-box-icon"><i class="far fa-calendar-alt"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Fecha de Prestamo</span>
+              <span class="info-box-number-fechap"></span>
+
+              <div class="progress">
+                <div class="progress-bar" style="width: 100%"></div>
+              </div>
+              </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+        <div class="col-md-3 col-sm-6 col-12">
+          <div class="info-box bg-danger">
+            <span class="info-box-icon"><i class="fab fa-paypal"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Tipo de Pago</span>
+              <span class="info-box-number-tipopago"></span>
+
+              <div class="progress">
+                <div class="progress-bar" style="width: 100%"></div>
+              </div>
+              
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+      </div>
+
+      <div class="row">
+        <div class="col-md-3 col-sm-6 col-12">
+          <div class="info-box bg-info">
+            <span class="info-box-icon"><i class="far fa-bookmark"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Interes</span>
+              <span class="info-box-number-interes"></span>
+
+              <div class="progress">
+                <div class="progress-bar" style="width: 100%"></div>
+              </div>
+              
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+        <div class="col-md-3 col-sm-6 col-12">
+          <div class="info-box bg-success">
+            <span class="info-box-icon"><i class="fas fa-dollar-sign"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">valor de cuota</span>
+              <span class="info-box-number-valorcuota"></span>
+
+              <div class="progress">
+                <div class="progress-bar" style="width: 100%"></div>
+              </div>
+              
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+        
+        <div class="col-md-3 col-sm-6 col-12">
+          <div class="info-box bg-danger">
+            <span class="info-box-icon"><i class="fas fa-money-check-alt"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Monto Total</span>
+              <span class="info-box-number-montototal"></span>
+
+              <div class="progress">
+                <div class="progress-bar" style="width: 100%"></div>
+              </div>
+              
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+        <div class="col-md-3 col-sm-6 col-12">
+          <div class="info-box bg-warning">
+            <span class="info-box-icon"><i class="far fa-calendar-alt"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Fecha de inicio</span>
+              <span class="info-box-number-fechai"></span>
+
+              <div class="progress">
+                <div class="progress-bar" style="width: 100%"></div>
+              </div>
+              </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+      </div>
+
+
+    </div>
+ 
+ 
   </div>
-  <!-- /.card body -->
-      
+   <!-- /.card-body -->
+  
+ 
+    
+   
+ 
   </div>
   <!-- /.card -->
 
-  </div>
-  </div>
+</div>
 </div>
 
 
@@ -517,15 +685,8 @@ $('#create_cliente').click(function(){
       $('#modal-u').modal('show');
      
     }
-    
 
-  }).fail( function( jqXHR, textStatus, errorThrown ) {
-
-if (jqXHR.status === 403) {
-
-  Manteliviano.notificaciones('No tienes permisos para realizar esta accion', 'Sistema Ventas', 'warning');
-
-}});
+  })
 
  });
 
@@ -551,7 +712,7 @@ $(document).on('click', '.prestamo', function(){
 
   Swal.fire({
      title: "¿Estás seguro?",
-     text: "Estás por crear un prestamo",
+     text: "Estás por crear un cliente",
      icon: "success", 
      showCancelButton: true,
      showCloseButton: true,
@@ -585,96 +746,27 @@ $(document).on('click', '.prestamo', function(){
 //Detalle prestamo
 
 $(document).on('click', '.detalle', function(){
-  
     var id = $(this).attr('id');
-    $("#detalle").empty();
+    
     $.ajax({
     url:"http://127.0.0.1:8000/prestamo/"+id+"",
     dataType:"json",
     success:function(data){
-      $.each(data.result, function(i, item){
-      $("#detalle").append(        
-        '<div class="row">'+
-        '<div class="col-12"><div class="info-box bg-info"><span class="info-box-icon"><i class="far fa-bookmark"></i></span><div class="info-box-content">'+
-        '<span class="info-box-text">Nombre Cliente</span>'+
-        '<span class="info-box-text">'+item.nombres+' '+item.apellidos+'</span>'+
-        '<div class="progress"><div class="progress-bar" style="width: 100%"></div></div></div><!-- /.info-box-content --></div><!-- /.info-box --></div></div><!-- /.col -->'+
-        '</div>'+
-        
-        '<div class="row">'+
-        '<div class="col-md-3 col-sm-6 col-12"><div class="info-box bg-info"><span class="info-box-icon"><i class="fas fa-money-check-alt"></i></span><div class="info-box-content">'+
-              '<span class="info-box-text">Monto</span>'+
-              '<span class="info-box-number">'+item.monto+'</span>'+
-        '<div class="progress"><div class="progress-bar" style="width: 100%"></div></div></div><!-- /.info-box-content --></div><!-- /.info-box --></div><!-- /.col -->'+
-
-        '<div class="col-md-3 col-sm-6 col-12"><div class="info-box bg-success"><span class="info-box-icon"><i class="fas fa-hashtag"></i></span><div class="info-box-content">'+
-              '<span class="info-box-text">Cantidad de Cuotas</span>'+
-              '<span class="info-box-number">'+item.cuotas+'</span>'+
-        '<div class="progress"><div class="progress-bar" style="width: 100%"></div></div></div><!-- /.info-box-content --></div><!-- /.info-box --></div><!-- /.col -->'+
-        
-        '<div class="col-md-3 col-sm-6 col-12"><div class="info-box bg-warning"><span class="info-box-icon"><i class="far fa-calendar-alt"></i></span><div class="info-box-content">'+
-              '<span class="info-box-text">Fecha de Prestamo</span>'+
-              '<span class="info-box-date">'+item.created_at+'</span>'+
-        '<div class="progress"><div class="progress-bar" style="width: 100%"></div></div></div><!-- /.info-box-content --></div><!-- /.info-box --></div><!-- /.col -->'+
-         
-        '<div class="col-md-3 col-sm-6 col-12"><div class="info-box bg-danger"><span class="info-box-icon"><i class="fab fa-paypal"></i></span><div class="info-box-content">'+
-              '<span class="info-box-text">Tipo de Pago</span>'+
-              '<span class="info-box-text">'+item.tipo_pago+'</span>'+
-        '<div class="progress"><div class="progress-bar" style="width: 100%"></div></div></div><!-- /.info-box-content --></div><!-- /.info-box --></div><!-- /.col -->'+
-        '</div>'+
-    // Segundo bloque de wigetds
-
-    '<div class="row">'+
-    '<div class="col-md-3 col-sm-6 col-12"><div class="info-box bg-info"><span class="info-box-icon"><i class="far fa-bookmark"></i></span><div class="info-box-content">'+
-              '<span class="info-box-text">Interes</span>'+
-              '<span class="info-box-number-interes">'+item.interes+'</span>'+
-    '<div class="progress"><div class="progress-bar" style="width: 100%"></div></div></div><!-- /.info-box-content --></div><!-- /.info-box --></div><!-- /.col -->'+
-
-    '<div class="col-md-3 col-sm-6 col-12"><div class="info-box bg-success"><span class="info-box-icon"><i class="fas fa-dollar-sign"></i></span><div class="info-box-content">'+
-              '<span class="info-box-text">valor de cuota</span>'+
-              '<span class="info-box-number-valorcuota">'+item.valor_cuota+'</span>'+
-    '<div class="progress"><div class="progress-bar" style="width: 100%"></div></div></div><!-- /.info-box-content --></div><!-- /.info-box --></div><!-- /.col -->'+
-        
-    '<div class="col-md-3 col-sm-6 col-12"><div class="info-box bg-danger"><span class="info-box-icon"><i class="fas fa-money-check-alt"></i></span><div class="info-box-content">'+
-              '<span class="info-box-text">Monto Total</span>'+
-              '<span class="info-box-number-montototal">'+item.monto_total+'</span>'+
-    '<div class="progress"><div class="progress-bar" style="width: 100%"></div></div></div><!-- /.info-box-content --></div><!-- /.info-box --></div><!-- /.col -->'+
-    
-    '<div class="col-md-3 col-sm-6 col-12"><div class="info-box bg-warning"><span class="info-box-icon"><i class="far fa-calendar-alt"></i></span><div class="info-box-content">'+
-              '<span class="info-box-text">Fecha de inicio</span>'+
-              '<span class="info-box-date">'+item.fecha_inicial+'</span>'+
-    '<div class="progress"><div class="progress-bar" style="width: 100%"></div></div></div><!-- /.info-box-content --></div><!-- /.info-box --></div><!-- /.col -->'+
-    '</div>'
-    
-
-
-    // Para colocar en tabla
-    //             '<th>Monto</th>'+
-    //             '<th>cuotas</th>'+
-    //             '<th>Fecha de prestamo</th>'+
-    //             '<th>Tipo de Pago</th>'+
-    //             '<th>Interes</th>'+
-    //             '<th>Valor Cuota</th>'+
-    //             '<th>Monto Total</th>'+
-    //             '<th>Fecha primera cuota</th></tr></thead>'+
-        
-    //  '<tr>'+
-    //   '<td align="center" style="dislay: none;">'+item.nombres+' '+item.apellidos+'</td>'+
-    //   '<td align="center" style="dislay: none;">'+item.monto + '</td>'+
-    //   '<td align="center" style="dislay: none;">'+item.cuotas+ '</td>'+
-    //   '<td align="center" style="dislay: none;">'+item.created_at+ '</td>'+
-    //   '<td align="center" style="dislay: none;">'+item.tipo_pago+ '</td>'+
-    //   '<td align="center" style="dislay: none;">'+item.interes+ '</td>'+
-    //   '<td align="center" style="dislay: none;">'+item.valor_cuota+ '</td>'+
-    //   '<td align="center" style="dislay: none;">'+item.monto_total+ '</td>'+
-    //   '<td align="center" style="dislay: none;">'+item.fecha_inicial+ '</td>'+
-    //    '</tr>'
-       );
-       $('.modal-title-d').text('Detalle de prestamo');
-      $('#modal-d').modal('show');
-      })   
-     
+      $.each(data, function(datas, result){
+      $('.info-box-number-monto').text(result.monto);
+      $('.info-box-number-cuotas').text(result.cuotas);
+      $('.info-box-number-fechap').text(result.created_at);
+      $('.info-box-number-tipopago').text(result.tipo_pago);
+      $('.info-box-number-interes').text(result.interes);
+      $('.info-box-number-valorcuota').text(result.valor_cuota);
+      $('.info-box-number-montototal').text(result.monto_total);
+      $('.info-box-number-fechai').text(result.fecha_inicial);
+      $('.info-box-number-nombre').text(result.nombres+' '+result.apellidos);
       
+      
+      $('.modal-title-d').text('Detalle de prestamo');
+      $('#modal-d').modal('show');
+      })
     }
   });
 });

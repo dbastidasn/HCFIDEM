@@ -18,7 +18,7 @@ class RolTablaSeeder extends Seeder
 
             'administrador',
             'empresa',
-            'supervisor'
+            'empleado'
 
         ];
 

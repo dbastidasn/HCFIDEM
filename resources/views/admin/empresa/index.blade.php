@@ -250,6 +250,7 @@ $('#create_empresa').click(function(){
   $('#modal-u').modal('show');
  });
 
+
  $('#form-general').on('submit', function(event){
     event.preventDefault(); 
     var url = '';
@@ -257,16 +258,20 @@ $('#create_empresa').click(function(){
   if($('#action').val() == 'Add')
   {
     url = "{{route('guardar_empresa')}}";
+    method = 'post';
+    text = "Estás por crear empresa";
   }  
 
   if($('#action').val() == 'Edit')
   {
     var updateid = $('#hidden_id').val();
-    url = "/empresa/"+updateid;
+    url = "empresa/"+updateid;
+    method = 'put';
+    text = "Estás por actualizar empresa";
   }  
     Swal.fire({
      title: "¿Estás seguro?",
-     text: "Estás por crear empresa",
+     text: text,
      icon: "success", 
      showCancelButton: true,
      showCloseButton: true,
@@ -275,7 +280,7 @@ $('#create_empresa').click(function(){
     if(result.value){ 
     $.ajax({
            url:url,
-           method:'post',
+           method:method,
            data:$(this).serialize(),
            dataType:"json",
            success:function(data){
@@ -298,6 +303,12 @@ $('#create_empresa').click(function(){
                       $('#empresa').DataTable().ajax.reload();
                       Manteliviano.notificaciones('Empresa creada correctamente', 'Sistema Ventas', 'success');
                       
+                    }else if(data.success == 'ok1'){
+                      $('#form-general')[0].reset();
+                      $('#modal-u').modal('hide');
+                      $('#empresa').DataTable().ajax.reload();
+                      Manteliviano.notificaciones('Empresa actualizada correctamente', 'Sistema Ventas', 'success');
+
                     } 
                     $('#form_result').html(html)  
               }
@@ -311,113 +322,113 @@ $('#create_empresa').click(function(){
   });
 
 
-  // $(document).on('click', '#edit', function(){
-  //   var id = $(this).attr('id');
-  //   $('#form_result').html('');
-  //   $.ajax({
-  //       url:"http://127.0.0.1:8000/empresa/1/editar",
-  //       dataType: "json",
-  //       success:function(data){
-  //         $('#nombre').val(data.result.nombre);
-  //         //$('#tipo_documento').val(data.result.tipo_documento);
-  //         $('#documento').val(data.result.documento);
-  //         //$('#activo').val(data.result.activo);
-  //         $('#hidden_id').val(id);
-  //         $('.modal-title  ').text('Editar Registro');
-  //         $('#action_button').val('Edit');
-  //         $('#action').val('Edit');
-  //         $('#modal-u').modal('show');
+  $(document).on('click', '.edit', function(){
+    var id = $(this).attr('id');
+    $('#form_result').html('');
+    $.ajax({
+        url:"http://127.0.0.1:8000/admin/empresa/"+id+"/editar",
+        dataType: "json",
+        success:function(data){
+          $('#nombre').val(data.result.nombre);
+          $('#tipo_documento').val(data.result.tipo_documento);
+          $('#documento').val(data.result.documento);
+          $('#activo').val(data.result.activo);
+          $('#hidden_id').val(id);
+          $('.modal-title').text('Editar Registro');
+          $('#action_button').val('Edit');
+          $('#action').val('Edit');
+          $('#modal-u').modal('show');
 
-  //       }
-  //   })
-  // });
+        }
+    })
+  });
 
-// $('#form-general').on('click', '#guardar',  function(){
+$('#form-general').on('click', '#guardar',  function(){
   
   
-//   var nombre = $('#nombre').val();
-//   var tipo_documento = $('#tipo_documento').val();
-//   var documento = $('#documento').val();
-//   var activo = $('#activo').val();
+  var nombre = $('#nombre').val();
+  var tipo_documento = $('#tipo_documento').val();
+  var documento = $('#documento').val();
+  var activo = $('#activo').val();
   
-//   if(nombre == '' || tipo_documento == '' || documento == '' || activo == ''){
+  if(nombre == '' || tipo_documento == '' || documento == '' || activo == ''){
 
-//         Swal.fire({
-//          title: 'Debes rellenar todos los campos',
-//          icon: 'warning',
-//          buttons:{
-//              cancel: "Cerrar"
+        Swal.fire({
+         title: 'Debes rellenar todos los campos',
+         icon: 'warning',
+         buttons:{
+             cancel: "Cerrar"
              
-//                  }
-//            }) 
+                 }
+           }) 
 
-//   }else{
-//      Swal.fire({
-//      title: "¿Estás seguro?",
-//      text: "Estás por crear empresa",
-//      icon: "success",
-//      showCancelButton: true,
-//      showCloseButton: true,
-//      confirmButtonText: 'Aceptar',
-//      }).then((result)=>{
-//     if(result.value){  
-//        $.ajax({
+  }else{
+     Swal.fire({
+     title: "¿Estás seguro?",
+     text: "Estás por crear empresa",
+     icon: "success",
+     showCancelButton: true,
+     showCloseButton: true,
+     confirmButtonText: 'Aceptar',
+     }).then((result)=>{
+    if(result.value){  
+       $.ajax({
         
-//              url:"{{route('guardar_empresa')}}",
-//              method:'post',
-//              data:{nombre:nombre, tipo_documento:tipo_documento, documento:documento, activo:activo,
-//               "_token": $("meta[name='csrf-token']").attr("content")},
+             url:"{{route('guardar_empresa')}}",
+             method:'post',
+             data:{nombre:nombre, tipo_documento:tipo_documento, documento:documento, activo:activo,
+              "_token": $("meta[name='csrf-token']").attr("content")},
 
-//              success:function(respuesta)
-//              {  
-//               if(respuesta.mensaje = 'ok') {
-//                $('#modal-u').modal('hide');
-//                $('#empresa').DataTable().ajax.reload();
+             success:function(respuesta)
+             {  
+              if(respuesta.mensaje = 'ok') {
+               $('#modal-u').modal('hide');
+               $('#empresa').DataTable().ajax.reload();
                
-//                Manteliviano.notificaciones('Empresa creada correctamente', 'Sistema Ventas', 'success');
-//                }else if(respuesta.mensaje = 'ng'){
+               Manteliviano.notificaciones('Empresa creada correctamente', 'Sistema Ventas', 'success');
+               }else if(respuesta.mensaje = 'ng'){
               
-//                  $('#empresa').DataTable().ajax.reload();
-//                  Manteliviano.notificaciones('Nombre o Documento ya estan registrados, documento debe ser numerico', 'Sistema Ventas', 'warning');
-//              }
-//              }
+                 $('#empresa').DataTable().ajax.reload();
+                 Manteliviano.notificaciones('Nombre o Documento ya estan registrados, documento debe ser numerico', 'Sistema Ventas', 'warning');
+             }
+             }
             
-//               }).fail( function( jqXHR, textStatus, errorThrown ) {
+              }).fail( function( jqXHR, textStatus, errorThrown ) {
 
-//           if (jqXHR.status === 0) {
+          if (jqXHR.status === 0) {
 
-//             alert('Not connect: Verify Network.');
+            alert('Not connect: Verify Network.');
 
-//           } else if (jqXHR.status == 404) {
+          } else if (jqXHR.status == 404) {
 
-//             alert('Requested page not found [404]');
+            alert('Requested page not found [404]');
 
-//           } else if (jqXHR.status == 422) {
-//                  Manteliviano.notificaciones('Nombre o Documento ya estan registrados, documento debe ser numerico y menor de 9999999999','Sistema Ventas',  'warning'); 
+          } else if (jqXHR.status == 422) {
+                 Manteliviano.notificaciones('Nombre o Documento ya estan registrados, documento debe ser numerico y menor de 9999999999','Sistema Ventas',  'warning'); 
               
             
-//           } else if (textStatus === 'parsererror') {
+          } else if (textStatus === 'parsererror') {
 
-//             alert('Requested JSON parse failed.');
+            alert('Requested JSON parse failed.');
 
-//           } else if (textStatus === 'timeout') {
+          } else if (textStatus === 'timeout') {
 
-//             alert('Time out error.');
+            alert('Time out error.');
 
-//           } else if (textStatus === 'abort') {
+          } else if (textStatus === 'abort') {
 
-//             alert('Ajax request aborted.');
+            alert('Ajax request aborted.');
 
-//           }       
+          }       
             
-//               });
+              });
 
-//   }
+  }
 
-// });
+});
 
-//   }
-// })
+  }
+})
 
 
 // $(document).on('click', function(Mostrar){

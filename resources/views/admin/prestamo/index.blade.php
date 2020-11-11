@@ -5,6 +5,8 @@
 @endsection
 @section("styles")
 <link href="{{asset("assets/$theme/plugins/datatables-bs4/css/dataTables.bootstrap4.css")}}" rel="stylesheet" type="text/css"/>
+<link href="{{asset("assets/css/select2-bootstrap.min.css")}}" rel="stylesheet" type="text/css"/>
+<link href="{{asset("assets/css/select2.min.css")}}" rel="stylesheet" type="text/css"/>
 
 <style>
 /* .dt-button {
@@ -16,7 +18,7 @@
 
 
 @section('scripts')
-<!--<script src="{{asset("assets/pages/scripts/admin/prestamo/crear.js")}}" type="text/javascript"></script> -->   
+
 @endsection
 
 @section('contenido')
@@ -29,7 +31,7 @@
         <div class="card-header with-border">
           <h3 class="card-title">Prestamo</h3>
           <div class="card-tools pull-right">
-            <button type="button" name="create_prestamo" id="create_prestamo" class="btn btn-default" data-toggle="modal" data-target="#modal-p"><i class="fa fa-fw fa-plus-circle"></i>Crear prestamo</button>
+            <button type="button" name="create_prestamo" id="create_prestamo" class="btn btn-default" data-toggle="modal" data-target="#modal-pc"><i class="fa fa-fw fa-plus-circle"></i>Crear prestamo</button>
             </button>
           </div>
         </div>
@@ -40,7 +42,9 @@
         <thead>
         <tr>  
               <th>Acciones</th>
-              <th>id</th>
+              <th>Consecutivo</th>
+              <th>Nombres</th>
+              <th>Apellidos</th>
               <th>Monto</th>
               <th>Monto Pendiente</th>
               <th>Tipo de Pago</th>
@@ -53,7 +57,7 @@
               <th>fecha Final</th>
               <th>Observación</th>
               <th>Estado</th>
-              <th>Usuadio</th>
+              <th>Usuario</th>
               <th>Cliente</th>
               <th>Fecha de Prestamo</th>
               
@@ -79,7 +83,7 @@
 
 
 
-<div class="modal fade" tabindex="-1" id ="modal-p"  role="dialog" aria-labelledby="myLargeModalLabel">
+<div class="modal fade" tabindex="-1" id ="modal-pc"  role="dialog" aria-labelledby="myLargeModalLabel">
   <div class="modal-dialog modal-xl" role="document">
   <div class="modal-content">
      
@@ -89,7 +93,7 @@
         @include('includes.form-mensaje')
          <div class="card card-danger">
           <div class="card-header">
-               <h6 class="modal-title-p"></h6>
+               <h6 class="modal-title-pc"></h6>
             <div class="card-tools pull-right">
               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
               </div>
@@ -101,14 +105,14 @@
         <form id="form-general" name="form-general" class="form-horizontal" method="post">
           @csrf
           <div class="card-body">
-                        @include('admin.prestamo.form')
+                        @include('admin.prestamo.form-prestamo')
           </div>
           <!-- /.card-body -->
                        <div class="card-footer">
                           
                             <div class="col-lg-3"></div>
                             <div class="col-lg-6">
-                            @include('includes.boton-form-crear-empresa-empleado-usuario')    
+                            @include('includes.boton-form-crear-prestamo')    
                         </div>
                          </div>
           <!-- /.card-footer -->
@@ -138,6 +142,7 @@
 @section("scriptsPlugins")
 <script src="{{asset("assets/$theme/plugins/datatables/jquery.dataTables.js")}}" type="text/javascript"></script>
 <script src="{{asset("assets/$theme/plugins/datatables-bs4/js/dataTables.bootstrap4.js")}}" type="text/javascript"></script>
+<script src="{{asset("assets/js/jquery-select2/select2.min.js")}}" type="text/javascript"></script>
 
 
 
@@ -151,6 +156,11 @@
 <script>
  
  $(document).ready(function(){
+
+$("#cliente_id").select2();
+
+
+
 
    //Calculo de monto total diario, semanal, quincenal y mensual al realizar cualqiuier cambio en los input
 
@@ -228,8 +238,14 @@ $("#interes").change(cuota);
            name:'action',
            orderable: false
           },
-          {data:'id',
-          name:'id'
+          {data:'consecutivo',
+          name:'consecutivo'
+          },
+          {data:'nombres',
+          name:'nombres'
+          },
+          {data:'apellidos',
+          name:'apellidos'
           },
           {data:'monto',
           name:'monto'}
@@ -330,14 +346,15 @@ $("#interes").change(cuota);
 
 
  //Crear prestamos
+ 
 
-$(document).on('click', '.prestamo', function(){
-    var id = $(this).attr('id');
-    $('#cliente_id').val(id);
-    $('.modal-title-p').text('Agregar prestamo');
-    $('#action_button').val('Add');
-    $('#action').val('Add');
-    $('#modal-p').modal('show');
+ $('#create_prestamo').click(function(){
+  $('#form-general')[0].reset();
+  $('.modal-title-pc').text('Crear prestamo');
+  $('#action_button').val('Add');
+  $('#action').val('Add');
+  $('#form_result').html('');
+  $('#modal-pc').modal('show');
     
 
   $('#form-general').on('submit', function(event){
@@ -348,8 +365,15 @@ $(document).on('click', '.prestamo', function(){
     urlp = "{{route('guardar_prestamo')}}";
     methodp = 'post';
   }
-
-
+  Swal.fire({
+     title: "¿Estás seguro?",
+     text: "Estás por crear un prestamo",
+     icon: "success", 
+     showCancelButton: true,
+     showCloseButton: true,
+     confirmButtonText: 'Aceptar',
+     }).then((result)=>{
+    if(result.value){
     $.ajax({  
            url:urlp,
            method:methodp,
@@ -358,8 +382,8 @@ $(document).on('click', '.prestamo', function(){
            success:function(data){
             if(data.success == 'ok') {
                       $('#form-general')[0].reset();
-                      $('#modal-p').modal('hide');
-                      $('#cliente').DataTable().ajax.reload();
+                      $('#modal-pc').modal('hide');
+                      $('#prestamo').DataTable().ajax.reload();
                       Manteliviano.notificaciones('prestamo agregado correctamente', 'Sistema Ventas', 'success');
                       
                     }
@@ -367,7 +391,9 @@ $(document).on('click', '.prestamo', function(){
      
      }
 
-  });
+            });
+        }
+      });
 
   });
 
