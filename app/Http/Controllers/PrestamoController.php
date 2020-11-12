@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Admin\Cliente;
+use App\Models\Admin\DetallePrestamo;
 use App\Models\Admin\Prestamo;
 use App\Models\Seguridad\Usuario;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -27,18 +29,19 @@ class PrestamoController extends Controller
      
         if($request->ajax()){
 
-            $datas = DB::table('prestamo')->Join('cliente', 'prestamo.cliente_id', '=', 'cliente.id')
+            $datas = DB::table('prestamo')
+            ->Join('cliente', 'prestamo.cliente_id', '=', 'cliente.id')
             ->where('prestamo.usuario_id', '=', $usuario_id)->get();
             return  DataTables()->of($datas)
             // ->addColumn('editar', '<a href="{{url("cliente/$id/editar")}}" class="btn-accion-tabla tooltipsC" title="Editar este cliente">
             //       <i class="fa fa-fw fa-pencil-alt"></i>
             //     </a>')
             ->addColumn('action', function($datas){
-          $button = '<button type="button" name="edit" id="'.$datas->id.'"
+          $button = '<button type="button" name="edit" id="'.$datas->prestamo->id.'"
           class = "edit btn-float  bg-gradient-primary btn-sm tooltipsC"  title="Editar Prestamo"><i class="far fa-edit"></i></button>';
           $button .='&nbsp;<button type="button" name="prestamo" id="'.$datas->id.'"
           class = "prestamo btn-float  bg-gradient-warning btn-sm tooltipsC" title="Agregar Pago"><i class="fa fa-fw fa-plus-circle"></i><i class="fas fa-money-bill-alt"></i></button>';
-          $button .='&nbsp;<button type="button" name="detalle" id="'.$datas->id.'"
+          $button .='&nbsp;<button type="button" name="detalle" id="'.$datas->idp.'"
           class = "detalle btn-float  bg-gradient-success btn-sm tooltipsC" title="Detalle de Pagos"><i class="fas fa-atlas"></i></i></button>';
           return $button;
 
@@ -86,9 +89,123 @@ class PrestamoController extends Controller
         }
         
         Prestamo::create($request->all());
-            return response()->json(['success' => 'ok']);
-    }
 
+        $id = DB::table('prestamo')->orderBy('idp','desc')->limit(1)->select('idp')->get();
+       
+        $cuotas = $request->cuotas;
+        $fechaInicial = $request->fecha_inicial;
+        $tipo_pago = $request->tipo_pago;
+        $valorcuota = $request->valor_cuota;
+        
+        if( $tipo_pago == "Semanal"){
+        
+         $numero_cuota = 1;
+       
+        foreach($id as $ids) {
+        for ($i=0; $i < $cuotas; $i++) { 
+        
+        DB::table('detalle_prestamo')
+        ->insert([
+        'numero_cuota'=> $numero_cuota,
+        'valor_cuota'=> $valorcuota,
+        'fecha_cuota'=> $fechaInicial,
+        'estado'=> 'P',
+        'activo'=> 1,
+        'prestamo_id'=> $ids->idp,
+        'created_at'=> now()
+        ]);
+
+        $numero_cuota++;
+        $fechaInicial = Carbon::createFromFormat('Y-m-d',$fechaInicial)->addDay(7)->toDateString();
+        
+                
+        }
+
+        }
+        
+        }else if ($tipo_pago == "Quincenal") {
+            $numero_cuota = 1;
+       
+            foreach($id as $ids) {
+            for ($i=0; $i < $cuotas; $i++) { 
+            
+            DB::table('detalle_prestamo')
+            ->insert([
+            'numero_cuota'=> $numero_cuota,
+            'valor_cuota'=> $valorcuota,
+            'fecha_cuota'=> $fechaInicial,
+            'estado'=> 'P',
+            'activo'=> 1,
+            'prestamo_id'=> $ids->idp,
+            'created_at'=> now()
+            ]);
+    
+            $numero_cuota++;
+            $fechaInicial = Carbon::createFromFormat('Y-m-d',$fechaInicial)->addDay(15)->toDateString();
+            
+                    
+            }
+    
+            }
+        }else if ($tipo_pago == "Mensual") {
+            $numero_cuota = 1;
+       
+            foreach($id as $ids) {
+            for ($i=0; $i < $cuotas; $i++) { 
+            
+            DB::table('detalle_prestamo')
+            ->insert([
+            'numero_cuota'=> $numero_cuota,
+            'valor_cuota'=> $valorcuota,
+            'fecha_cuota'=> $fechaInicial,
+            'estado'=> 'P',
+            'activo'=> 1,
+            'prestamo_id'=> $ids->idp,
+            'created_at'=> now()
+            ]);
+    
+            $numero_cuota++;
+            $fechaInicial = Carbon::createFromFormat('Y-m-d',$fechaInicial)->addDay(30)->toDateString();
+            
+                    
+            }
+    
+            }
+        }else if ($tipo_pago == "Diario") {
+            $numero_cuota = 1;
+       
+            foreach($id as $ids) {
+            for ($i=0; $i < $cuotas; $i++) { 
+            
+             DB::table('detalle_prestamo')
+            ->insert([
+            'numero_cuota'=> $numero_cuota,
+            'valor_cuota'=> $valorcuota,
+            'fecha_cuota'=> $fechaInicial,
+            'estado'=> 'P',
+            'activo'=> 1,
+            'prestamo_id'=> $ids->idp,
+            'created_at'=> now()
+            ]);
+             
+            
+
+            $numero_cuota++;
+            
+            if(date('N', strtotime($fechaInicial)) == 6){
+                $fechaInicial = Carbon::createFromFormat('Y-m-d',$fechaInicial)->addDay(2)->toDateString();
+            }else{ 
+            
+            $fechaInicial = Carbon::createFromFormat('Y-m-d',$fechaInicial)->addDay(1)->toDateString();
+            }  
+            }
+    
+            }
+        }
+        
+            return response()->json(['success' => 'ok']);
+        }
+    
     /**
      * Display the specified resource.
      *
@@ -100,11 +217,16 @@ class PrestamoController extends Controller
         
         if(request()->ajax()){
 
-        $data = DB::table('prestamo')->Join('cliente', 'prestamo.cliente_id', '=', 'cliente.id')
-            ->where('prestamo.cliente_id', '=', $id)->get();
-
+        $data = DB::table('prestamo')
+        ->Join('cliente', 'prestamo.cliente_id', '=', 'cliente.id')
+        ->where('prestamo.cliente_id', '=', $id)->get();
+        
+            $datacuotas = DB::table('prestamo')
+             ->Join('detalle_prestamo', 'prestamo.idp', '=', 'detalle_prestamo.prestamo_id')
+             ->where('detalle_prestamo.prestamo_id', '=', $id)->get();
+    
         // $data = Prestamo::with('Cliente:nombres')->where('cliente_id', $id)->first();
-            return response()->json(['result'=>$data]);
+            return response()->json(['result'=>$data, 'result1'=>$datacuotas ]);
 
         }
         

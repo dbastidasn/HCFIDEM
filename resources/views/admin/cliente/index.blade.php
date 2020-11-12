@@ -182,20 +182,19 @@
           <button type="button" class="btn btn-block bg-gradient-primary btn-sm" data-dismiss="modal">Close</button>
         </div>
     </div>
-    <div class="card-body"  id="detalle" style="display: block;">
-      {{-- <!--tabla -->
-      <div  class="card-body table-responsive p-2">
+    <div class="card-body"  id="detalles" style="display: block;">
+      
+  
+  </div>
+  <!-- /.card body -->
+  <!--tabla -->
+      {{-- <div  class="card-body table-responsive p-2">
         
-      <table id="detalle" class="table table-
-      hover  text-nowrap">  
+      <table id="detalleCuota" class="table table-hover  text-nowrap">  
             
       </table>
       </div> --}}
       <!-- /.class-table-responsive -->
-  
-  </div>
-  <!-- /.card body -->
-      
   </div>
   <!-- /.card -->
 
@@ -587,13 +586,14 @@ $(document).on('click', '.prestamo', function(){
 $(document).on('click', '.detalle', function(){
   
     var id = $(this).attr('id');
-    $("#detalle").empty();
+    $("#detalleCuota").empty();
+    $("#detalles").empty();
     $.ajax({
     url:"http://127.0.0.1:8000/prestamo/"+id+"",
     dataType:"json",
     success:function(data){
       $.each(data.result, function(i, item){
-      $("#detalle").append(        
+      $("#detalles").append(        
         '<div class="row">'+
         '<div class="col-12"><div class="info-box bg-info"><span class="info-box-icon"><i class="far fa-bookmark"></i></span><div class="info-box-content">'+
         '<span class="info-box-text">Nombre Cliente</span>'+
@@ -670,12 +670,36 @@ $(document).on('click', '.detalle', function(){
     //   '<td align="center" style="dislay: none;">'+item.fecha_inicial+ '</td>'+
     //    '</tr>'
        );
-       $('.modal-title-d').text('Detalle de prestamo');
-      $('#modal-d').modal('show');
-      })   
-     
+       
+      }),
+      function(dataCuotas){
+      $.each(dataCuotas.result1, function(i, items){
+      $("#detalleCuota").append(        
       
+      //Para colocar en tabla
+                '<tr><th>Numero de cuota</th>'+
+                '<th>Valor cuota</th>'+
+                '<th>Fecha de Cuota</th>'+
+                '<th>estado</th>'+
+                '</tr></thead>'+
+        
+     '<tr>'+
+      '<td align="center" style="dislay: none;">'+items.numero_cuota+'</td>'+
+      '<td align="center" style="dislay: none;">'+items.valor_cuota + '</td>'+
+      '<td align="center" style="dislay: none;">'+items.fecha_cuota+ '</td>'+
+      '<td align="center" style="dislay: none;">'+items.estado+ '</td>'+
+      '</tr>'
+      
+      );
+      });
+       
+      
+    
+    } 
+    $('.modal-title-d').text('Detalle de prestamo');
+    $('#modal-d').modal('show');
     }
+    
   });
 });
 

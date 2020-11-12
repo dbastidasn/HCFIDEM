@@ -126,7 +126,39 @@
 </div>
 </div>
 
+<!-- /.Modal detalle prestamo -->
+<div class="modal fade" tabindex="-1" id ="modal-d"  role="dialog" aria-labelledby="myLargeModalLabel">
+  <div class="modal-dialog modal-xl" role="document">
+  <div class="modal-content">
 
+
+  <!-- Default box -->
+  <div class="card">
+    <div class="card-header">
+      <h6 class="modal-title-d"></h6>
+      <div class="card-tools pull-right">
+          <button type="button" class="btn btn-block bg-gradient-primary btn-sm" data-dismiss="modal">Close</button>
+        </div>
+    </div>
+    {{-- <div class="card-body"  id="detalles" style="display: block;">
+      
+  
+  </div> --}}
+  <!-- /.card body -->
+  <!--tabla -->
+      <div  class="card-body table-responsive p-2">
+        
+      <table id="detalleCuota" class="table table-hover  text-nowrap  table-striped table-bordered"  style="width:100%">  
+            
+      </table>
+      </div>
+      <!-- /.class-table-responsive -->
+  </div>
+  <!-- /.card -->
+
+  </div>
+  </div>
+</div>
 
   
 
@@ -399,7 +431,46 @@ $("#interes").change(cuota);
 
 });
 
+//Detalle prestamo
 
+$(document).on('click', '.detalle', function(){
+  
+  var id = $(this).attr('id');
+  $("#detalleCuota").empty();
+  
+  $.ajax({
+  url:"http://127.0.0.1:8000/prestamo/"+id+"",
+  dataType:"json",
+  success:function(dataCuotas){
+    $.each(dataCuotas.result1, function(i, items){
+    $("#detalleCuota").append(        
+    
+    //Para colocar en tabla
+              '<thead><tr><th align="center" style="dislay: none;">Numero de cuota</th>'+
+              '<th align="center" style="dislay: none;">Valor cuota</th>'+
+              '<th align="center" style="dislay: none;">Fecha de Cuota</th>'+
+              '<th align="center" style="dislay: none;">estado</th>'+
+              '</tr></thead>'+
+      
+   '<tr>'+
+    '<td>'+items.numero_cuota+'</td>'+
+    '<td>'+items.valor_cuota + '</td>'+
+    '<td>'+items.fecha_cuota+ '</td>'+
+    '<td>'+items.estado+ '</td>'+
+    '</tr>'
+    
+    );
+    });
+    $('.modal-title-d').text('Detalle de prestamo');
+    $('#modal-d').modal('show');  
+    
+  
+  } 
+ 
+  
+  
+});
+});
  
 
 });

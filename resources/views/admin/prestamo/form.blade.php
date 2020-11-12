@@ -82,6 +82,10 @@
             <label for="cliente_id" class="col-xs-4 control-label requerido"></label>
             <input type="hidden" name="cliente_id" id="cliente_id" class="form-control" value="{{old('cliente_id', $data->cliente_id ?? '')}}" required >
         </div> 
+        <div class="col-lg-3">
+            <label for="estado" class="col-xs-4 control-label requerido"></label>
+            <input type="hidden" name="estado" id="estado" class="form-control" value="{{old('cliente_id', 'P' ?? '')}}" required >
+        </div> 
 
 </div>
 

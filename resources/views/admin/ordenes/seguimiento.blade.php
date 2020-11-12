@@ -49,7 +49,7 @@
   
 
         <!-- /.card-header -->
-<div class="card-body table-responsive p-0" style="height: 600px;">
+<div class="card-body table-responsive p-1" style="height: 600px;">
       <table id="seguimiento"  class="table table-head-fixed text-nowrap table-hover ">
         <thead>
         <tr> 

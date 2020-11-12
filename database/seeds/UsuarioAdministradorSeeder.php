@@ -167,14 +167,7 @@ class UsuarioAdministradorSeeder extends Seeder
             'orden'=>5, 
             'icono'=>'fas fa-industry'
         ]);
-        DB::table('menu')->insert([
-
-            'menu_id'=> 1, 
-            'nombre'=>'Empresa',
-            'url'=>'admin/empresa',
-            'orden'=>5, 
-            'icono'=>'fas fa-industry'
-        ]);
+       
         DB::table('menu')->insert([
 
             'menu_id'=> 0, 
