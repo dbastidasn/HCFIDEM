@@ -25,6 +25,8 @@
   
   <!-- Theme Toastr -->
   <link href="//cdn.jsdelivr.net/npm/@sweetalert2/theme-bootstrap-4/bootstrap-4.css" rel="stylesheet">
+  {{-- <link rel="stylesheet" href="{{asset("assets/$theme/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css")}}"> --}}
+  
   
   
   <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">-->
@@ -61,7 +63,8 @@ $id= Session()->get('usuario_id');
      
      <!-- Content Wrapper. Contains page content -->
           <div class="content-wrapper">
-            <!-- Content Header (Page header) -->
+            
+     <!-- Content Header (Page header) -->
             <section class="content">
                   @yield("contenido")       
             </section>
@@ -85,8 +88,11 @@ $id= Session()->get('usuario_id');
 @yield("scriptsPlugins")
 
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@9/dist/sweetalert2.min.js"></script>
+
 <!-- Jq Sweet alert cdn -->
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+{{-- <script src="{{asset("assets/$theme/plugins/sweetalert2/sweetalert2.min.js")}}"></script> --}}
+
 <!-- Jq Toastr cdn -->
 <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>-->
 <script src="{{asset("assets/$theme/plugins/toastr/toastr.min.js")}}"></script>

@@ -20,7 +20,7 @@ class CreatePagoTable extends Migration
             $table->decimal('valor_abono',15,2);
             $table->integer('numero_cuota');
             $table->date('fecha_pago');
-            $table->string('observacion',100)->nullable();
+            $table->string('observacion_pago',100)->nullable();
             $table->char('sync',1);
             $table->unsignedBigInteger('prestamo_id');
             $table->unsignedBigInteger('usuario_id');

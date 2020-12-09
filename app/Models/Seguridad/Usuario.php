@@ -61,7 +61,7 @@ class Usuario extends Authenticatable
     }
 
     public function empleados(){
-        return $this->belongsTo(Empleado::class, 'id');
+        return $this->belongsTo(Empleado::class, 'ide');
     }
 
    

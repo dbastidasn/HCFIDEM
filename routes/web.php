@@ -77,7 +77,7 @@ Route::group(['middleware' => ['auth']], function () {
 Route::get('/tablero', 'AdminController@index')->name('tablero');
 
 /* RUTAS DEL USUARIO */
-Route::get('usuario', 'UsuarioController@index')->name('usuario')->middleware('superConsultor');
+Route::get('usuario', 'UsuarioController@index')->name('usuario')->middleware('superEditor');
 Route::get('usuario/crear', 'UsuarioController@crear')->name('crear_usuario')->middleware('superEditor');
 Route::post('usuario', 'UsuarioController@guardar')->name('guardar_usuario')->middleware('superEditor');
 Route::get('usuario/{id}/editar', 'UsuarioController@editar')->name('editar_usuario')->middleware('superEditor');
@@ -94,27 +94,36 @@ Route::get('empleado/{id}/editar', 'empleadoController@editar')->name('editar_em
 Route::put('empleado/{id}', 'empleadoController@actualizar')->name('actualizar_empleado')->middleware('superEditor');
 
 /* RUTAS DEL CLIENTE */
-Route::get('cliente', 'clienteController@index')->name('cliente')->middleware('superEditor');
-Route::get('cliente/crear', 'clienteController@crear')->name('crear_cliente')->middleware('superEditor');
-Route::post('cliente', 'clienteController@guardar')->name('guardar_cliente')->middleware('superEditor');
-Route::get('cliente/{id}/editar', 'clienteController@editar')->name('editar_cliente')->middleware('superEditor');
-Route::put('cliente/{id}', 'clienteController@actualizar')->name('actualizar_cliente')->middleware('superEditor');
+Route::get('cliente', 'clienteController@index')->name('cliente')->middleware('superConsultor');
+Route::get('clientes/{id}', 'clienteController@indexCliente')->name('cliente_usuario')->middleware('superConsultor');
+
+Route::get('cliente/crear', 'clienteController@crear')->name('crear_cliente')->middleware('superConsultor');
+Route::post('cliente', 'clienteController@guardar')->name('guardar_cliente')->middleware('superConsultor');
+Route::get('cliente/{id}/editar', 'clienteController@editar')->name('editar_cliente')->middleware('superConsultor');
+Route::put('cliente/{id}', 'clienteController@actualizar')->name('actualizar_cliente')->middleware('superConsultor');
+
+/* RUTAS DEL ORDEN CLIENTE */
+Route::get('cliente/ruta', 'clienteController@ruta')->name('cliente-ruta')->middleware('superConsultor');
+Route::post('cliente/ruta', 'clienteController@rutaGuardar')->name('guardar-ruta')->middleware('superConsultor');
 
 /* RUTAS DEL PRESTAMO */
-Route::get('prestamo', 'prestamoController@index')->name('prestamo')->middleware('superEditor');
-Route::get('prestamo/crear', 'prestamoController@crear')->name('crear_prestamo')->middleware('superEditor');
-Route::post('prestamo', 'prestamoController@guardar')->name('guardar_prestamo')->middleware('superEditor');
-Route::get('prestamo/{id}/editar', 'prestamoController@editar')->name('editar_prestamo')->middleware('superEditor');
-Route::get('prestamo/{id}', 'prestamoController@detalle')->name('detalle_prestamo')->middleware('superEditor');
-Route::put('prestamo/{id}', 'prestamoController@actualizar')->name('actualizar_prestamo')->middleware('superEditor');
+Route::get('prestamo', 'prestamoController@index')->name('prestamo')->middleware('superConsultor');
+Route::get('prestamo/crear', 'prestamoController@crear')->name('crear_prestamo')->middleware('superConsultor');
+Route::post('prestamo', 'prestamoController@guardar')->name('guardar_prestamo')->middleware('superConsultor');
+Route::get('prestamo/{id}/editar', 'prestamoController@editar')->name('editar_prestamo')->middleware('superConsultor');
+Route::get('prestamo/{id}', 'prestamoController@detalle')->name('detalle_prestamo')->middleware('superConsultor');
+Route::put('prestamo/{id}', 'prestamoController@actualizar')->name('actualizar_prestamo')->middleware('superConsultor');
 
+Route::post('detalle_prestamo', 'DetallePrestamoController@update')->name('actualizar_cuota_fecha')->middleware('superConsultor');
 
 /* RUTAS DEL PAGO */
-Route::get('pago', 'pagoController@index')->name('pago')->middleware('superEditor');
-Route::get('pago/crear', 'pagoController@crear')->name('crear_pago')->middleware('superEditor');
-Route::post('pago', 'pagoController@guardar')->name('guardar_pago')->middleware('superEditor');
-Route::get('pago/{id}/editar', 'pagoController@editar')->name('editar_pago')->middleware('superEditor');
-Route::put('pago/{id}', 'pagoController@actualizar')->name('actualizar_pago')->middleware('superEditor');
+Route::get('pago/{id}', 'pagoController@detalle')->name('detalle_pago')->middleware('superConsultor');
+Route::get('pago', 'pagoController@index')->name('pago')->middleware('superConsultor');
+Route::get('pago/crear', 'pagoController@crear')->name('crear_pago')->middleware('superConsultor');
+Route::post('pago', 'pagoController@guardar')->name('guardar_pago')->middleware('superConsultor');
+Route::get('pago/{id}/editar', 'pagoController@editar')->name('editar_pago')->middleware('superConsultor');
+Route::get('pago/{id}/editpay', 'pagoController@editpay')->name('editpay_pago')->middleware('superConsultor');
+Route::put('pago/{id}', 'pagoController@actualizar')->name('actualizar_pago')->middleware('superConsultor');
 
 
 /* RUTAS DEL USUARIO NO ADMIN PARA CONTRASEÑA */

@@ -37,12 +37,12 @@ class PrestamoController extends Controller
             //       <i class="fa fa-fw fa-pencil-alt"></i>
             //     </a>')
             ->addColumn('action', function($datas){
-          $button = '<button type="button" name="edit" id="'.$datas->prestamo->id.'"
-          class = "edit btn-float  bg-gradient-primary btn-sm tooltipsC"  title="Editar Prestamo"><i class="far fa-edit"></i></button>';
-          $button .='&nbsp;<button type="button" name="prestamo" id="'.$datas->id.'"
-          class = "prestamo btn-float  bg-gradient-warning btn-sm tooltipsC" title="Agregar Pago"><i class="fa fa-fw fa-plus-circle"></i><i class="fas fa-money-bill-alt"></i></button>';
+        //   $button = '<button type="button" name="edit" id="'.$datas->prestamo->id.'"
+        //   class = "edit btn-float  bg-gradient-primary btn-sm tooltipsC"  title="Editar Prestamo"><i class="far fa-edit"></i></button>';
+          $button ='&nbsp;<button type="button" name="prestamo" id="'.$datas->idp.'"
+          class = "pagos btn-float  bg-gradient-warning btn-sm tooltipsC" title="Detalle de Pagos"><i class="fas fa-atlas"></i><i class="fas fa-money-bill-alt"></i></button>';
           $button .='&nbsp;<button type="button" name="detalle" id="'.$datas->idp.'"
-          class = "detalle btn-float  bg-gradient-success btn-sm tooltipsC" title="Detalle de Pagos"><i class="fas fa-atlas"></i></i></button>';
+          class = "detalle btn-float  bg-gradient-success btn-sm tooltipsC" title="Detalle de Cuotas"><i class="fas fa-atlas"></i></i></button>';
           return $button;
 
             }) 
@@ -77,7 +77,6 @@ class PrestamoController extends Controller
             'interes' => 'required',
             'valor_cuota' => 'required',
             'fecha_inicial' => 'required',
-            'fecha_final' => 'required',
             'usuario_id' => 'required',
             'activo' => 'required'
         );
@@ -87,7 +86,7 @@ class PrestamoController extends Controller
         if($error->fails()) {
             return response()->json(['errors' => $error->errors()->all()]);
         }
-        
+
         Prestamo::create($request->all());
 
         $id = DB::table('prestamo')->orderBy('idp','desc')->limit(1)->select('idp')->get();
@@ -106,10 +105,10 @@ class PrestamoController extends Controller
         
         DB::table('detalle_prestamo')
         ->insert([
-        'numero_cuota'=> $numero_cuota,
+        'd_numero_cuota'=> $numero_cuota,
         'valor_cuota'=> $valorcuota,
         'fecha_cuota'=> $fechaInicial,
-        'estado'=> 'P',
+        'estado'=> 'C',
         'activo'=> 1,
         'prestamo_id'=> $ids->idp,
         'created_at'=> now()
@@ -131,10 +130,10 @@ class PrestamoController extends Controller
             
             DB::table('detalle_prestamo')
             ->insert([
-            'numero_cuota'=> $numero_cuota,
+            'd_numero_cuota'=> $numero_cuota,
             'valor_cuota'=> $valorcuota,
             'fecha_cuota'=> $fechaInicial,
-            'estado'=> 'P',
+            'estado'=> 'C',
             'activo'=> 1,
             'prestamo_id'=> $ids->idp,
             'created_at'=> now()
@@ -155,10 +154,10 @@ class PrestamoController extends Controller
             
             DB::table('detalle_prestamo')
             ->insert([
-            'numero_cuota'=> $numero_cuota,
+            'd_numero_cuota'=> $numero_cuota,
             'valor_cuota'=> $valorcuota,
             'fecha_cuota'=> $fechaInicial,
-            'estado'=> 'P',
+            'estado'=> 'C',
             'activo'=> 1,
             'prestamo_id'=> $ids->idp,
             'created_at'=> now()
@@ -179,10 +178,10 @@ class PrestamoController extends Controller
             
              DB::table('detalle_prestamo')
             ->insert([
-            'numero_cuota'=> $numero_cuota,
+            'd_numero_cuota'=> $numero_cuota,
             'valor_cuota'=> $valorcuota,
             'fecha_cuota'=> $fechaInicial,
-            'estado'=> 'P',
+            'estado'=> 'C',
             'activo'=> 1,
             'prestamo_id'=> $ids->idp,
             'created_at'=> now()

@@ -1,14 +1,5 @@
 <div class="form-group row">
     <div class="col-lg-3">
-        <label for="cliente_id" class="col-xs-4 control-label requerido">cliente</label>
-        <select name="cliente_id" id="cliente_id" class="form-control select2bs4" style="width: 100%;" required>
-            <option value="">---seleccione documento---</option>
-            @foreach ($clientes as $id =>$cliente)
-                        <option value="{{$cliente->id}}" {{old('cliente_id')}} >{{$cliente->documento.'=>'.$cliente->nombres.' '.$cliente->apellidos}}</option>
-            @endforeach
-            </select>   
-    </div>
-    <div class="col-lg-3">
         <label for="Monto" class="col-xs-4 control-label requerido">Monto</label>
         <input type="number" name="monto" id="monto" class="form-control" value="{{old('monto', $data->monto ?? '')}}" required >
     </div>
@@ -22,11 +13,11 @@
             <option value="Mensual">Mensual</option>
             </select>
     </div>
-    <div class="col-lg-1">
+    <div class="col-lg-3">
         <label for="cuotas" class="col-xs-4 control-label requerido">Cuotas</label>
         <input type="text" name="cuotas" id="cuotas" class="form-control" value="{{old('cuotas', $data->cuotas ?? '')}}" required >
         </div>
-        <div class="col-lg-2">
+        <div class="col-lg-3">
             <label for="interes" class="col-xs-4 control-label requerido">Interes</label>
             <select name="interes" id="interes" class="form-control select2bs4" style="width: 100%;" required>
                 <option value="">---seleccione---</option>
@@ -57,20 +48,23 @@
         <input type="date" name="fecha_inicial" id="fecha_inicial" class="form-control" value="{{old('fecha_inicial', $data->fecha_inicial ?? '')}}" required >
     </div>
     <div class="col-lg-3">
-        <label for="rol_id" class="col-xs-4 control-label requerido">Usuario</label>
-                        <select name="usuario_id" id="usuario_id" class="form-control select2bs4" style="width: 100%;" readonly required>
-                        <option value="">---seleccione el usuario---</option>
-                        @foreach ($usuarios as $id => $usuario)
-                        <option value="{{$id}}" {{old('usuario_id', $datas->usuario_id ?? "") == $id ? "selected" : "selected"}} >{{$usuario}}</option>
-                        @endforeach
-                        </select>
+        <label for="fecha_final" class="col-xs-4 control-label requerido">fecha_final</label>
+        <input type="date" name="fecha_final" id="fecha_final" class="form-control" value="{{old('fecha_final', $data->fecha_inicial ?? '')}}" required >
     </div>
     
 </div>
 
 <div class="form-group row">
  
-   
+    <div class="col-lg-3">
+        <label for="rol_id" class="col-xs-4 control-label requerido">Usuario</label>
+                        <select name="usuario_id" id="usuario_id" class="form-control select2bs4" style="width: 100%;" required>
+                        <option value="">---seleccione el usuario---</option>
+                        @foreach ($usuarios as $id => $usuario)
+                        <option value="{{$id}}" {{old('usuario_id', $datas->usuario_id ?? "") == $id ? "selected" : "selected"}} >{{$usuario}}</option>
+                        @endforeach
+                        </select>
+    </div>
         
     <div class="col-lg-3">
         <label for="estado" class="col-xs-4 control-label requerido">Estado</label>
@@ -84,10 +78,14 @@
             <label for="observacion" class="col-xs-8 control-label requerido">Observación</label>
             <textarea name="observacion" id="observacion" class="form-control" rows="3" placeholder="Enter ..." value="{{old('observacion', $data->observacion ?? '')}}"></textarea>
         </div>
-        
-        <input type="hidden" name="estado" id="estado" class="form-control" value="{{old('cliente_id', 'C' ?? '')}}">
-        
-        <input type="hidden" name="monto_pendiente" id="monto_pendiente" class="form-control" value="{{old('monto_pendiente', $data->monto_pendiente ?? '')}}">
+        <div class="col-lg-3">
+            <label for="cliente_id" class="col-xs-4 control-label requerido"></label>
+            <input type="hidden" name="cliente_id" id="cliente_id" class="form-control" value="{{old('cliente_id', $data->cliente_id ?? '')}}" required >
+        </div> 
+        <div class="col-lg-3">
+            <label for="estado" class="col-xs-4 control-label requerido"></label>
+            <input type="hidden" name="estado" id="estado" class="form-control" value="{{old('cliente_id', 'P' ?? '')}}" required >
+        </div> 
 
 </div>
 

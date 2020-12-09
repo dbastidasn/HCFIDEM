@@ -144,7 +144,7 @@
               },
         columns: [
           {data:'editar'},
-          {data:'id'},
+          {data:'ide'},
           {data:'nombres'},
           {data:'apellidos'},
           {data:'tipo_documento'},
@@ -155,7 +155,7 @@
           {data:'direccion'},
           {data:'celular'},
           {data:'telefono'},
-          {data:'empresa_id'}, 
+          {data:'nombre'}, 
           {data:'activo'},
           
         ],
@@ -285,7 +285,15 @@ $('#create_empleado').click(function(){
   });
 
 
- // Edición de cliente
+//   $(document).on('click', '.clientes', function(){
+//     var id = $(this).attr('id');
+    
+//   $.ajax({
+//     url:"http://127.0.0.1:8000/cliente/"+id+"",
+//     dataType:"json"
+//   })
+// });
+ // Edición de empleado
 
  $(document).on('click', '.edit', function(){
     var id = $(this).attr('id');

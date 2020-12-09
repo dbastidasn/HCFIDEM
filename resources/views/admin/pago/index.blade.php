@@ -1,7 +1,7 @@
 @extends("theme.$theme.layout")
 
 @section('titulo')
-    Prestamo
+    Pago
 @endsection
 @section("styles")
 <link href="{{asset("assets/$theme/plugins/datatables-bs4/css/dataTables.bootstrap4.css")}}" rel="stylesheet" type="text/css"/>
@@ -9,17 +9,10 @@
 <link href="{{asset("assets/css/select2.min.css")}}" rel="stylesheet" type="text/css"/>
 
 <style>
-  .loader { 
-   
-  visibility: hidden; 
-  background-color: rgba(255, 253, 253, 0.952); 
-  position: absolute;
-  z-index: +100 !important;
-  width: 100%;  
-  height:100%;
- }
-    .loader img { position: relative; top:50%; left:40%;
-      width: 180px; height: 180px; }
+/* .dt-button {
+  padding: 2px;
+  border: true;
+} */
 </style>
 @endsection
 
@@ -30,43 +23,47 @@
 
 @section('contenido')
 <div class="row">
-      <div class="col-lg-12">
+    <div class="col-lg-12">
         @include('includes.form-error')
         @include('includes.form-mensaje')
      <br>   
     <div class="card card-success">
         <div class="card-header with-border">
-          <h3 class="card-title">Prestamo</h3>
+          <h3 class="card-title">Pagos</h3>
           <div class="card-tools pull-right">
-            <button type="button" name="create_prestamo" id="create_prestamo" class="btn btn-default" data-toggle="modal" data-target="#modal-pc"><i class="fa fa-fw fa-plus-circle"></i>Crear prestamo</button>
-            </button>
+            <div class="col-lm-3">
+              <label for="estado" class="col-xs-12 control-label requerido">Seleccione los pagos</label>
+                          <select name="estado_pago" id="estado_pago" class="form-control select2bs4" style="width: 100%;" required>
+                          <option value="">---seleccione los pagos---</option>
+                          <option value="0">Pagos por cobrar del día</option>
+                          <option value="1">Pagos registrados del día</option>
+                          </select>
+              </div>
           </div>
         </div>
       <div class="card-body table-responsive p-2">
         
-      <table id="prestamo" class="table table-hover  text-nowrap">
+      <table id="pago" class="table table-hover  text-nowrap">
         {{-- <table id="cliente" class="table table-striped table-bordered"> --}}
         <thead>
         <tr>  
               <th>Acciones</th>
-              <th>Consecutivo</th>
+              <th>Orden</th>
               <th>Nombres</th>
               <th>Apellidos</th>
               <th>Monto</th>
-              <th>Monto Total</th>
               <th>Saldo</th>
               <th>Saldo atrasado</th>
-              <th>Cuotas atrasadas</th>
               <th>Tipo de Pago</th>
               <th>Cuotas</th>
-              <th>Cuotas Pendientes</th>
+              <th>Cuotas atrasadas</th>
               <th>Interes</th>
+              <th>Monto Total</th>
+              <th>Cuota a cobrar</th>
               <th>Valor Cuotas</th>
-              <th>Fecha Inicial </th>
+              <th>Fecha Inicial</th>
+              <th>fecha de cuota</th>
               <th>Observación</th>
-              <th>Estado</th>
-              <th>Usuario</th>
-              <th>Cliente</th>
               <th>Fecha de Prestamo</th>
               
                            
@@ -87,22 +84,21 @@
 
 
   
-<!-- /.Modal crear prestamo -->
+<!-- /.Modal adicionar pago -->
 
 
 
-<div class="modal fade" tabindex="-1" id ="modal-pc"  role="dialog" aria-labelledby="myLargeModalLabel">
+<div class="modal fade" tabindex="-1" id ="modal-pd"  role="dialog" aria-labelledby="myLargeModalLabel">
   <div class="modal-dialog modal-xl" role="document">
   <div class="modal-content">
      
   <div class="row">
       <div class="col-lg-12">
-        <div class="loader col-lg-12"><img src="{{asset("assets/$theme/dist/img/loader6.gif")}}" class="" /> </div>
         @include('includes.form-error')
         @include('includes.form-mensaje')
          <div class="card card-danger">
           <div class="card-header">
-              <h6 class="modal-title-pc"></h6>
+               <h6 class="modal-title-pd"></h6>
             <div class="card-tools pull-right">
               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
               </div>
@@ -114,14 +110,14 @@
         <form id="form-general" name="form-general" class="form-horizontal" method="post">
           @csrf
           <div class="card-body">
-                        @include('admin.prestamo.form-prestamo')
+                        @include('admin.pago.form-pago')
           </div>
           <!-- /.card-body -->
                        <div class="card-footer">
                           
                             <div class="col-lg-3"></div>
                             <div class="col-lg-6">
-                            @include('includes.boton-form-crear-prestamo')    
+                            @include('includes.boton-form-registrar-pago')    
                         </div>
                          </div>
           <!-- /.card-footer -->
@@ -157,7 +153,7 @@
   <!--tabla -->
       <div  class="card-body table-responsive p-2">
         
-      <table id="detalleCuota" class="table table-hover  table-striped table-bordered"  style="width:100%">  
+      <table id="detalleCuota" class="table table-hover  text-nowrap  table-striped table-bordered"  style="width:100%">  
             
       </table>
       </div>
@@ -169,39 +165,6 @@
   </div>
 </div>
 
-<!-- /.Modal detalle pago -->
-<div class="modal fade" tabindex="-1" id ="modal-p"  role="dialog" aria-labelledby="myLargeModalLabel">
-  <div class="modal-dialog modal-xl" role="document">
-  <div class="modal-content">
-
-
-  <!-- Default box -->
-  <div class="card">
-    <div class="card-header">
-      <h6 class="modal-title-p"></h6>
-      <div class="card-tools pull-right">
-          <button type="button" class="btn btn-block bg-gradient-primary btn-sm" data-dismiss="modal">Close</button>
-        </div>
-    </div>
-    {{-- <div class="card-body"  id="detalles" style="display: block;">
-      
-  
-  </div> --}}
-  <!-- /.card body -->
-  <!--tabla -->
-      <div  class="card-body table-responsive p-2">
-        
-      <table id="detallePago" class="table table-hover  table-striped table-bordered"  style="width:100%">  
-            
-      </table>
-      </div>
-      <!-- /.class-table-responsive -->
-  </div>
-  <!-- /.card -->
-
-  </div>
-  </div>
-</div>
   
 
 
@@ -231,92 +194,54 @@
  
  $(document).ready(function(){
 
-$("#cliente_id").select2();
 
-
-
-
-   //Calculo de monto total diario, semanal, quincenal y mensual al realizar cualqiuier cambio en los input
-
-function monto(){
+  function ocultar(){
   
-  
-    if( $('#tipo_pago').val() == "Diario"){
+  if($('#customSwitch1').prop('checked') && $('#tipo_pago').val() != "Diario"){
+    $("#chance_fecha").css("display", "block")
+    $("#new_date").prop("required", true);
+    $("#valor_abono_ocultar").css("display", "none");
+    $("#valor_abono").removeAttr("required");
+    $('#action_button').val('Chance');
+    $('#action').val('Chance');
+     }else{
+      $("#chance_fecha").css("display", "none");
+      $("#valor_abono_ocultar").css("display", "block");
+      $("#valor_abono").prop("required", true);
+      $("#new_date").removeAttr("required");
+      $('#action_button').val('Add');
+      $('#action').val('Add');
+        }
 
-$('#monto_total').val(Math.round(parseFloat($("#monto").val()) +
- parseFloat((($("#monto").val() * $("#interes").val()) * ($("#cuotas").val()/30)))));
- $('#monto_pendiente').val($("#monto_total").val());
- $('#valor_cuota').val(Math.round( $('#monto_total').val()/$("#cuotas").val()));
+    }
 
-}else if( $('#tipo_pago').val() == "Mensual"){
+ $("#customSwitch1").change(ocultar);
+ 
 
-  $('#monto_total').val(parseFloat($("#monto").val()) +
-  parseFloat((($("#monto").val() * $("#interes").val()) * $("#cuotas").val())));
-  $('#monto_pendiente').val($("#monto_total").val());
-
-  $('#valor_cuota').val(Math.round( $('#monto_total').val()/$("#cuotas").val()));
-
-
-}else if( $('#tipo_pago').val() == "Quincenal"){
-
-$('#monto_total').val(Math.round(parseFloat($("#monto").val()) +
-parseFloat((($("#monto").val() * $("#interes").val()) * ($("#cuotas").val()/2)))));
-
-$('#monto_pendiente').val($("#monto_total").val());
-
-$('#valor_cuota').val(Math.round( $('#monto_total').val()/$("#cuotas").val()));
+ 
+ 
 
 
-}else if( $('#tipo_pago').val() == "Semanal"){
 
-$('#monto_total').val(Math.round(parseFloat($("#monto").val()) +
-parseFloat((($("#monto").val() * $("#interes").val()) * ($("#cuotas").val()/4)))));
-$('#monto_pendiente').val($("#monto_total").val());
+  fill_datatable();
 
-$('#valor_cuota').val(Math.round( $('#monto_total').val()/$("#cuotas").val()));
-
-
-}
-
-    
-}
-
- $("#cuotas").change(monto);
- $("#interes").change(monto); 
- $("#monto").change(monto);
- $("#tipo_pago").change(monto);
-
-// funcion Cuota------------------------------------------------------------------------
-
-function cuota(){
-
- if( $('#monto_total').val() > 0){
-
-  }   
-}
-
-$("#interes").change(cuota);
-
-//---------------------------------------------------
+  function fill_datatable( estado_pago = '')
+  {
         //initiate dataTables plugin
       var datatable = 
-        $('#prestamo')
+        $('#pago')
         //.wrap("<div class='dataTables_borderWrap' />")   //if you are applying horizontal scrolling (sScrollX)
         .DataTable({
-          // rowCallback: function(row, data, index){
-  	      // if(data[7]<1){
-    	    // $(row).find('td:eq(7)').css('color', 'blue');
-          //               }
-          // },  
         language: idioma_espanol,
         processing: true,
         lengthMenu: [ [25, 50, 100, 500, -1 ], [25, 50, 100, 500, "Mostrar Todo"] ],
         processing: true,
         serverSide: true,
         aaSorting: [[ 1, "asc" ]],
-        
         ajax:{
-          url:"{{ route('prestamo')}}",
+          url:"{{ route('pago')}}",
+          type:"get",
+          data: {estado_pago:estado_pago}
               },
         columns: [
           {data:'action',
@@ -333,19 +258,13 @@ $("#interes").change(cuota);
           name:'apellidos'
           },
           {data:'monto',
-          name:'monto'
-          },
-          {data:'monto_total',
-          name:'monto_total'
-          },
+          name:'monto'}
+          ,
           {data:'monto_pendiente',
            name:'monto_pendiente'
           },
           {data:'latitud',
            name:'latitud'
-          },
-          {data:'cuotas_atrasadas',
-          name:'cuotas_atrasadas'
           },
           {data:'tipo_pago',
           name:'tipo_pago'
@@ -353,33 +272,31 @@ $("#interes").change(cuota);
           {data:'cuotas',
           name:'cuotas'
           },
-          {data:'cuotas_pendientes',
-          name:'cuotas_pendientes'
+          {data:'cuotas_atrasadas',
+          name:'cuotas_atrasadas'
           },
           {data:'interes',
           name:'interes'
           },
-          
+          {data:'monto_total',
+          name:'monto_total'
+          },
+          {data:'d_numero_cuota',
+          name:'d_numero_cuota'
+          },
           {data:'valor_cuota',
           name:'valor_cuota'
           },
           {data:'fecha_inicial',
           name:'fecha_inicial'
           },
-         
+          {data:'fecha_cuota',
+          name:'fecha_cuota'
+          },
           {data:'observacion',
           name:'observacion'
           },
-          {data:'activo',
-          name:'activo'
-          },
          
-          {data:'usuario_id',
-          name:'usuario_id'
-          },
-          {data:'cliente_id',
-          name:'cliente_id'
-          },
           {data:'created_at',
           name:'created_at'
           },
@@ -433,40 +350,66 @@ $("#interes").change(cuota);
     
         });
 
+  }
 
 
- //Crear prestamos
- 
-
- $('#create_prestamo').click(function(){
-  $('#form-general')[0].reset();
-  $('.modal-title-pc').text('Crear prestamo');
-  $('#action_button').val('Add');
-  $('#action').val('Add');
-  $('#form_result').html('');
-  $('#modal-pc').modal('show');
+  $("#estado_pago").change(function(){
+  
+  var estado_pago = $('#estado_pago').val();
+  
+  if(estado_pago != '' ){
     
+       $('#pago').DataTable().destroy();
+       fill_datatable(estado_pago);
+    
+    }
+  });
+   
+
+
+ //Registrar pago
+
+   
 
   $('#form-general').on('submit', function(event){
     event.preventDefault(); 
-   
-    if($('#action').val() == 'Add')
+    var text = '';
+    var urlp = '';
+    var methodp = '';
+
+  if($('#action').val() == 'Add')
   {
-    urlp = "{{route('guardar_prestamo')}}";
+    text = "Estás por registrar un pago";
+    urlp = "{{route('guardar_pago')}}";
     methodp = 'post';
   }
+  
+  if($('#action').val() == 'Edit')
+  {
+    var id = $('#hidden_id').val();
+    text = "Estás por actualizar un pago";
+    urlp = "/pago/"+id;
+    methodp = 'put';
+  }  
+
+  if($('#action').val() == 'Chance')
+  {
+    text = "Estás por cambiar fecha del pago";
+    urlp = "{{route('actualizar_cuota_fecha')}}";
+    methodp = 'post';
+  }
+
+
   Swal.fire({
      title: "¿Estás seguro?",
-     text: "Estás por crear un prestamo",
+     text: text,
      icon: "success", 
      showCancelButton: true,
      showCloseButton: true,
      confirmButtonText: 'Aceptar',
      }).then((result)=>{
     if(result.value){
-    $.ajax({
-          beforeSend: function(){ 
-          $('.loader').css("visibility", "visible"); },
+    $.ajax({  
            url:urlp,
            method:methodp,
            data:$(this).serialize(),
@@ -474,38 +417,179 @@ $("#interes").change(cuota);
            success:function(data){
             if(data.success == 'ok') {
                       $('#form-general')[0].reset();
-                      $('#modal-pc').modal('hide');
-                      $('#prestamo').DataTable().ajax.reload();
+                      $('#modal-pd').modal('hide');
+                      $('#pago').DataTable().ajax.reload();
                       Swal.fire(
                         {
                           icon: 'success',
-                          title: 'prestamo agregado correctamente',
+                          title: 'Pago registrado correctamente',
                           showConfirmButton: false,
                           timer: 1500
-                          
                         }
                       )
-                      // Manteliviano.notificaciones('prestamo agregado correctamente', 'Sistema Ventas', 'success');
+                      // Manteliviano.notificaciones('Pago registrado correctamente', 'Sistema Ventas', 'success');
                       
-                    }
-  
-     
-          },
-          complete: function(){ 
-          $('.loader').css("visibility", "hidden");
-          }
+                                    }else if(data.success == 'total') {
+                      $('#form-general')[0].reset();
+                      $('#modal-pd').modal('hide');
+                      $('#pago').DataTable().ajax.reload();
+                      Swal.fire(
+                        {
+                          icon: 'info',
+                          title: 'Pago cancelado en su totalidad',
+                          showConfirmButton: true,
+                          timer: 1500
+                        }
+                      )
+                      // Manteliviano.notificaciones('Pago registrado correctamente', 'Sistema Ventas', 'success');
+                      
+                                    }else if(data.success == 'oka') {
+                      $('#form-general')[0].reset();
+                      $('#modal-pd').modal('hide');
+                      $('#pago').DataTable().ajax.reload();
+                      Swal.fire(
+                        {
+                          icon: 'info',
+                          title: 'Pago actualizado correctamente',
+                          showConfirmButton: false,
+                          timer: 1500
+                        }
+                      )
+                      // Manteliviano.notificaciones('Pago registrado correctamente', 'Sistema Ventas', 'success');
+                      
+                                    }else if(data.success == 'okdate') {
+                      $('#form-general')[0].reset();
+                      $('#modal-pd').modal('hide');
+                      $('#pago').DataTable().ajax.reload();
+                      Swal.fire(
+                        {
+                          icon: 'info',
+                          title: 'Fecha de cuota actualizada correctamente',
+                          showConfirmButton: false,
+                          timer: 1500
+                        }
+                      )
+                      // Manteliviano.notificaciones('Pago registrado correctamente', 'Sistema Ventas', 'success');
+                      
+                                    }else if(data.success == 'noa'){
+                                      Swal.fire(
+                                                  {
+                                                    icon: 'success',
+                                                    title: 'El pago supera el atrasado debe activar el boton abono',
+                                                    showConfirmButton: true,
+                                                    timer: false
+                                                  }
+                                                )
+
+                                      // Manteliviano.notificaciones('El pago supera el atrasado debe activar el boton abono', 'Sistema Ventas', 'success');
+
+                                    }
+                                 
+                                 
+                                 
+                                 }
 
             });
-        }
-      });
+                    }
+                      });
 
   });
 
-});
 
-//Detalle prestamo
 
-$(document).on('click', '.detalle', function(){
+
+//Pago a registrar
+
+$(document).on('click', '.pay', function(){
+    var id = $(this).attr('id');
+    
+  $.ajax({
+    url:"/pago/"+id+"/editar",
+    dataType:"json",
+    success:function(data){
+      $.each(data.result, function(i, items){
+      $('#nombres').val(items.nombres+' '+items.apellidos);
+      $('#tipo_pago').val(items.tipo_pago);
+      $('#idp').val(items.idp);
+      $('#monto').val(items.monto_total);
+      $('#monto_pendiente').val(items.monto_pendiente);
+      $('#longitud').val(items.longitud);
+      $('#latitud').val(items.latitud);
+      $('#n_cuota').val(items.d_numero_cuota);
+      $('#cuotas_atrasadas').val(items.cuotas_atrasadas);
+      $('#cuotas').val(items.cuotas);
+      $('#valor_cuota').val(items.valor_cuota);
+      $('#fecha_cuota').val(items.fecha_cuota);
+      $('#hidden_id').val(items.usuario_id);
+      $('.modal-title-pd').text('Registar pago');
+      $('#action_button').val('Add');
+      $('#action').val('Add');
+      $('#modal-pd').modal('show');
+              
+    });
+    }
+    
+
+  }).fail( function( jqXHR, textStatus, errorThrown ) {
+
+if (jqXHR.status === 403) {
+
+  Manteliviano.notificaciones('No tienes permisos para realizar esta accion', 'Sistema Ventas', 'warning');
+
+}});
+
+ });
+
+
+//Pago a editar 
+
+$(document).on('click', '.editpay', function(){
+    var id = $(this).attr('id');
+    
+  $.ajax({
+    url:"/pago/"+id+"/editpay",
+    dataType:"json",
+    success:function(data){
+      $.each(data.result, function(i, items){
+      $('#nombres').val(items.nombres+' '+items.apellidos);
+      $('#tipo_pago').val(items.tipo_pago);
+      $('#idp').val(items.idp);
+      $('#monto').val(items.monto_total);
+      $('#monto_pendiente').val(items.monto_pendiente);
+      $('#longitud').val(items.longitud);
+      $('#latitud').val(items.latitud);
+      $('#n_cuota').val(items.d_numero_cuota);
+      $('#cuotas_atrasadas').val(items.cuotas_atrasadas);
+      $('#cuotas').val(items.cuotas);
+      $('#valor_cuota').val(items.valor_cuota);
+      $('#fecha_cuota').val(items.fecha_cuota);
+      $('#valor_abono').val(items.valor_abono);
+      $('#hidden_id').val(items.usuario_id);
+      $('.modal-title-pd').text('Editar pago');
+      $('#action_button').val('Edit');
+      $('#action').val('Edit');
+      $('#modal-pd').modal('show');
+              
+    });
+    }
+    
+
+  }).fail( function( jqXHR, textStatus, errorThrown ) {
+
+if (jqXHR.status === 403) {
+
+  Manteliviano.notificaciones('No tienes permisos para realizar esta accion', 'Sistema Ventas', 'warning');
+
+}});
+
+ });
+
+
+
+
+//Detalle pago
+
+$(document).on('click', '.detallepay', function(){
   
   var id = $(this).attr('id');
   $("#detalleCuota").empty();
@@ -514,21 +598,19 @@ $(document).on('click', '.detalle', function(){
   url:"http://127.0.0.1:8000/prestamo/"+id+"",
   dataType:"json",
   success:function(dataCuotas){
-    $("#detalleCuota").append( 
-      '<thead><tr><th align="center" style="dislay: none;">Numero de cuota</th>'+
-              '<th align="center" style="dislay: none;">Valor cuota</th>'+
-              '<th align="center" style="dislay: none;">Fecha de Cuota</th>'+
-              '<th align="center" style="dislay: none;">estado</th>'+
-              '</tr></thead>'
-      );
     $.each(dataCuotas.result1, function(i, items){
     $("#detalleCuota").append(        
     
     //Para colocar en tabla
-             
+              '<thead><tr><th align="center" style="dislay: none;">Numero de cuota</th>'+
+              '<th align="center" style="dislay: none;">Valor cuota</th>'+
+              '<th align="center" style="dislay: none;">Fecha de Cuota</th>'+
+              '<th align="center" style="dislay: none;">estado</th>'+
+              '</tr></thead>'+
+      
    '<tr>'+
     '<td>'+items.d_numero_cuota+'</td>'+
-    '<td>'+items.valor_cuota+ '</td>'+
+    '<td>'+items.valor_cuota + '</td>'+
     '<td>'+items.fecha_cuota+ '</td>'+
     '<td>'+items.estado+ '</td>'+
     '</tr>'
@@ -546,54 +628,9 @@ $(document).on('click', '.detalle', function(){
 });
 });
  
-//Detalle pagos
-
-$(document).on('click', '.pagos', function(){
-  
-  var id = $(this).attr('id');
-  $("#detallePago").empty();
-  
-  $.ajax({
-  url:"http://127.0.0.1:8000/pago/"+id+"",
-  dataType:"json",
-  success:function(dataPagos){
-    $("#detallePago").append( 
-      '<thead><tr><th align="center" style="dislay: none;">Numero de Prestamo</th>'+
-              '<th align="center" style="dislay: none;">Numero de cuota</th>'+
-              '<th align="center" style="dislay: none;">Valor Abono</th>'+
-              '<th align="center" style="dislay: none;">Fecha de Pago</th>'+
-                            '</tr></thead>'
-      );
-    $.each(dataPagos.result1, function(i, items){
-    $("#detallePago").append(        
-    
-    //Para colocar en tabla
-             
-   '<tr>'+
-    '<td>'+items.prestamo_id+'</td>'+
-    '<td>'+items.numero_cuota + '</td>'+
-    '<td>'+items.valor_abono+ '</td>'+
-    '<td>'+items.fecha_pago+ '</td>'+
-    '</tr>'
-    
-    );
-    });
-    $('.modal-title-p').text('Detalle de prestamo');
-    $('#modal-p').modal('show');  
-    
-  
-  } 
- 
-  
-  
-});
-});
 
 });
 
-
-    
-       
 
    var idioma_espanol =
                  {

@@ -48,23 +48,20 @@
         <input type="date" name="fecha_inicial" id="fecha_inicial" class="form-control" value="{{old('fecha_inicial', $data->fecha_inicial ?? '')}}" required >
     </div>
     <div class="col-lg-3">
-        <label for="fecha_final" class="col-xs-4 control-label requerido">fecha_final</label>
-        <input type="date" name="fecha_final" id="fecha_final" class="form-control" value="{{old('fecha_final', $data->fecha_inicial ?? '')}}" required >
-    </div>
-    
-</div>
-
-<div class="form-group row">
- 
-    <div class="col-lg-3">
         <label for="rol_id" class="col-xs-4 control-label requerido">Usuario</label>
-                        <select name="usuario_id" id="usuario_id" class="form-control select2bs4" style="width: 100%;" required>
+                        <select name="usuario_id" id="usuario_id" class="form-control select2bs4" style="width: 100%;" readonly required>
                         <option value="">---seleccione el usuario---</option>
                         @foreach ($usuarios as $id => $usuario)
                         <option value="{{$id}}" {{old('usuario_id', $datas->usuario_id ?? "") == $id ? "selected" : "selected"}} >{{$usuario}}</option>
                         @endforeach
                         </select>
     </div>
+    
+</div>
+
+<div class="form-group row">
+ 
+    
         
     <div class="col-lg-3">
         <label for="estado" class="col-xs-4 control-label requerido">Estado</label>
@@ -84,9 +81,9 @@
         </div> 
         <div class="col-lg-3">
             <label for="estado" class="col-xs-4 control-label requerido"></label>
-            <input type="hidden" name="estado" id="estado" class="form-control" value="{{old('cliente_id', 'P' ?? '')}}" required >
+            <input type="hidden" name="estado" id="estado" class="form-control" value="{{old('cliente_id', 'C' ?? '')}}" required >
         </div> 
-
+        <input type="hidden" name="monto_pendiente" id="monto_pendiente" class="form-control" value="{{old('monto_pendiente', $data->monto_pendiente ?? '')}}">
 </div>
 
 

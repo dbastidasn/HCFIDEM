@@ -7,6 +7,7 @@ use App\Models\Admin\Empleado;
 use App\Models\Seguridad\Usuario;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Validator;
 
 
@@ -48,9 +49,64 @@ class ClienteController extends Controller
         return view('admin.cliente.index', compact('usuarios', 'datas'));
     }
 
+
+    public function indexCliente(Request $request, $id)
+    {
+        
+         $id_empleado = $id;
+         
+         
+         $id_usuarios = Usuario::where('empleado_id','=', $id_empleado)->first();
+         $id_usuario = $id_usuarios->id;
+         $usuarios = Usuario::orderBy('id')->where('id', '=', $id_usuario)->pluck('usuario', 'id')->toArray();
+         
+            
+        if($request->ajax()){
+
+            $datas = Cliente::where('usuario_id', '=', $id_usuario)->orderBy('usuario_id')->orderBy('consecutivo')->get();
+            return  DataTables()->of($datas)
+            ->addColumn('action', function($datas){
+          $button = '<button type="button" name="edit" id="'.$datas->id.'"
+          class = "edit btn-float  bg-gradient-primary btn-sm tooltipsC"  title="Editar Cliente"><i class="far fa-edit"></i></button>';
+          $button .='&nbsp;<button type="button" name="prestamo" id="'.$datas->id.'"
+          class = "prestamo btn-float  bg-gradient-warning btn-sm tooltipsC" title="Agregar Prestamo"><i class="fa fa-fw fa-plus-circle"></i><i class="fas fa-money-bill-alt"></i></button>';
+          $button .='&nbsp;<button type="button" name="detalle" id="'.$datas->id.'"
+          class = "detalle btn-float  bg-gradient-success btn-sm tooltipsC" title="Detalle de Prestamos"><i class="fas fa-atlas"></i></i></button>';
+          return $button;
+
+            }) 
+            ->rawColumns(['action'])
+            ->make(true);
+            }
+        return view('admin.cliente.index', compact('usuarios', 'datas'));
+    }
+
+    public function ruta()
+    {
+        
+         $id_usuario = Session()->get('usuario_id');
+         $datas = Cliente::where('usuario_id', '=', $id_usuario)->orderBy('usuario_id')->orderBy('consecutivo')->get();
+           
+        return view('admin.cliente.ruta.index', compact('datas'));  
+    }
+
+    public function rutaGuardar()
+    {
+        
+         $id_usuario = Session()->get('usuario_id');
+         $datas = Cliente::where('usuario_id', '=', $id_usuario)->orderBy('usuario_id')->orderBy('consecutivo')->get();
+         $itemId = Input::get('itemId');
+         $itemConsecutivo = Input::get('itemConsecutivo');
+         foreach ($datas as $item) {
+            return Cliente::where('id', '=', $itemId)
+            ->update(array('consecutivo' => $itemConsecutivo));
+         }
+        
+    }
+
     /**
      * Show the form for creating a new resource.
-     *
+     *s
      * @return \Illuminate\Http\Response
      */
     public function guardar(Request $request)

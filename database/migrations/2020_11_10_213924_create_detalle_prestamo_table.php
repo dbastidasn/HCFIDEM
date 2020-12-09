@@ -14,9 +14,10 @@ class CreateDetallePrestamoTable extends Migration
     public function up()
     {
         Schema::create('detalle_prestamo', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->integer('numero_cuota');
+            $table->bigIncrements('idd');
+            $table->integer('d_numero_cuota');
             $table->decimal('valor_cuota',15,2);
+            $table->decimal('valor_cuota_pagada',15,2)->nullable();
             $table->date('fecha_cuota');
             $table->char('estado',1);
             $table->char('activo',1);
